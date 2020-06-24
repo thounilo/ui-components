@@ -1,0 +1,57 @@
+
+
+  @import '_variables';
+  @import '_helpers';
+
+  //* ------
+  //* Resets
+  //* ------
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  h1, h2, h3, h4, h5, h6, p {
+    margin: 0;
+    line-height: 90%;
+  }
+
+  a {
+    color: #{map-get($t, 'color-primary')}
+  }
+
+  a:visited {
+    color: #{map-get($t, 'color-primary-darker')}
+  }
+
+  body {
+    padding: 0;
+    margin: 0;
+    font-family:  #{map-get($t, 'font-primary')};
+    color: #{map-get($t, 'color-light')};
+    background: #{map-get($t, 'color-dark')};
+    font-size: #{map-get($t, 'font-base-size')};
+
+    --BASE-BORDER-RADIUS: #{map-get($t, 'border-radius')};
+    --BASE-BORDER-COLOR: #{map-get($t, 'color-primary')};
+    --BASE-BORDER-WIDTH: #{map-get($t, 'border-width')};
+    --BASE-PRIMARY: #{map-get($t, 'color-primary')};
+    --BASE-PRIMARY-DARKER: #{map-get($t, 'color-primary-darker')};
+    --BASE-LIGHT: #{map-get($t, 'color-light')};
+
+    --BASE-FONT: #{map-get($t, 'font-primary')};
+
+    --BASE-TRANSITION-BACKGROUND: background #{map-get($transition, 'background-duration') map-get($transition, 'background-easing')};
+  }
+
+  ul, li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  input {
+    background: none;
+    border: none;
+  }

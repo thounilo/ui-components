@@ -1,0 +1,68 @@
+
+@import '_helpers';
+
+//* New style of defining variables
+
+$base-hue:        190;
+$base-saturation: 40%;
+$base-lightness:  55%;
+
+$base-border-width:  2px;
+$base-border-radius: .25rem;
+
+$colors: (
+  primary:         hsl($base-hue,      $base-saturation, $base-lightness),
+  primary-darker:  hsl($base-hue,      $base-saturation, $base-lightness - 10,),
+  primary-lighter: hsl($base-hue,      $base-saturation, $base-lightness + 10,),
+  secondary:       hsl($base-hue + 90, $base-saturation, $base-lightness),
+  dark:          hsl(0, 0%, 20%),
+  light:         hsl(0, 0%, 90%),
+);
+
+$border-radius: (
+  sm: .25rem,
+  md: .5rem,
+  lg: 1rem,
+  circle: 50%
+);
+
+$input-text: (
+  height: 2.25rem,
+  width: 20em,
+  background: map-get($colors, 'primary'),
+  padding: .25rem .75rem,
+);
+
+$input-checkbox: (
+  size: 1.2rem
+);
+
+$transition: (
+  background-duration: 300ms,
+  background-easing: ease-out,
+);
+
+$border: (
+  width: 2px,
+  type: solid
+);
+
+$font: (
+  primary: Comfortaa,
+  size: 16px
+);
+
+$t: (
+  color-primary: map-get($colors, 'primary'),
+  color-primary-darker: map-get($colors, 'primary-darker'),
+  color-primary-lighter: map-get($colors, 'primary-lighter'),
+  color-secondary: map-get($colors, 'secondary'),
+  color-dark: map-get($colors, 'dark'),
+  color-light: map-get($colors, 'light'),
+  border-radius: map-get($border-radius, 'sm'),
+  border-color: map-get($colors, 'primary'),
+  border-type: map-get($border, 'type'),
+  border-width: map-get($border, 'width'),
+  font-primary: map-get($font, 'primary'),
+  font-base-size: map-get($font, 'size'),
+);

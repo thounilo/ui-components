@@ -1,0 +1,129 @@
+
+$margins: (
+  m: margin,
+  mt: margin-top,
+  ml: margin-left,
+  mb: margin-bottom,
+  mr: margin-right,
+);
+
+$paddings: (
+  p: padding,
+  pt: padding-top,
+  pl: padding-left,
+  pb: padding-bottom,
+  pr: padding-right
+);
+
+
+@for $i from 1 through 16 {
+
+  $size: #{$i * 0.25}rem;
+
+  //* Margins
+  @each $class, $prop in $margins {
+    .#{$class}-#{$i} {
+      #{$prop}: $size;
+    }
+  }
+  .#{mx}-#{$i} {
+    margin-left: $size;
+    margin-right: $size;
+  }
+  .#{my}-#{$i} {
+    margin-top: $size;
+    margin-bottom: $size;
+  }
+
+  //* Paddings
+  @each $class, $prop in $paddings {
+    .#{$class}-#{$i} {
+      #{$prop}: $size;
+    }
+  }
+  .#{px}-#{$i} {
+    padding-left: $size;
+    padding-right: $size;
+  }
+  .#{py}-#{$i} {
+    padding-top: $size;
+    padding-bottom: $size;
+  }
+
+  //* Sizes
+  .#{w}-#{$i} {
+    width: $size;
+  }
+  .#{h}-#{$i} {
+    height: $size;
+  }
+}
+
+//* Positioning
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.fixed {
+  position: fixed;
+}
+
+//* Display
+.flex {
+  display: flex;
+}
+.block {
+  display: block;
+}
+.inline {
+  display: inline;
+}
+.inline-block {
+  display: inline-block;
+}
+.hide {
+  display: none;
+}
+
+//* Sizing
+.w-full {
+  width: 100%;
+}
+.w-screen {
+  width: 100vw;
+}
+.h-screen {
+  height: 100vh;
+}
+.h-full {
+  height: 100%;
+}
+
+.wh-full {
+  width: 100%;
+  height: 100%;
+}
+
+.wh-screen {
+  width: 100vw;
+  height: 100vh;
+}
+.full-screen {
+  width: 100vw;
+  height: 100vh;
+}
+.scroll-y {
+  overflow: hidden;
+  overflow-y: scroll;
+}
