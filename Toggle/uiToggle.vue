@@ -1,7 +1,5 @@
 <style lang="scss">
 
-  $transition-duration: 300ms;
-
   .ui-toggle {
 
     --width: 2.6em;
@@ -55,9 +53,7 @@
       width: 0;
       height: 0;
     }
-
   }
-
 
 </style>
 
@@ -75,10 +71,12 @@
 </template>
 
 <script>
+
   export default {
     name: "ui-toggle",
     props: {
       value: Boolean
     }
   }
+
 </script>
