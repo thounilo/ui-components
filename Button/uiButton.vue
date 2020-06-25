@@ -9,7 +9,7 @@
   $state-disabled: #ccc;
   $state-disable-color: #333;
   $gap: .35em;
-
+  $transition-duration: 300ms;
 
   .ui-button {
 
@@ -32,7 +32,7 @@
     border-radius: var(--border-radius);
     font-family: var(--ui-font);
     cursor: pointer;
-    transition: all 200ms;
+    transition: all $transition-duration;
 
     &:hover::before {
       background: $state-hover;
@@ -48,7 +48,7 @@
     }
 
     &:active {
-      animation: push 300ms forwards;
+      animation: push $transition-duration forwards;
 
     }
     &:disabled {
