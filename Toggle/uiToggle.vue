@@ -74,9 +74,7 @@
 
   export default {
     name: "ui-toggle",
-    props: {
-      value: Boolean
-    }
+    props: { value: Boolean }
   }
 
 </script>

@@ -1,67 +1,147 @@
 <style lang="scss">
 
-  @import '../../assets/_variables.scss';
+  @import '../assets/_variables.scss';
 
-  $button-height: 2.25rem;
-  $button-padding: .25rem .75rem;
-  $button-background: var(--BASE-PRIMARY);
-  $button-color: #FFF;
-  // $button-border-radius: $theme-border-radius;
-  $button-border-radius: 10em;
+  $state: map-get($colors, 'primary');
+  $state-hover: hsla(0, 0%, 100%, .05);
+  $state-focus: hsla(0, 0%, 0%, .05);
+  $state-focus-border: hsla(0, 0%, 50%, .3);
+  $state-disabled: #ccc;
+  $state-disable-color: #333;
+  $gap: .35em;
+
+
   .ui-button {
 
-    --height: #{$button-height};
-    --width: initial;
-    --background: #{$button-background};
-    --border: 2px solid transparent;
-    --color: #{$button-color};
+    --size: 1em;
+    --color: var(--ui-c-light);
+    --background: var(--ui-c-primary);
+    --border: none;
+    --border-radius: #{map-get($border-radius, 'sm')};
 
+    font-size: var(--size);
+    position: relative;
     display: flex;
     align-items: center;
-    height: var(--height);
-    width: var(--width);
+    width: initial;
+    height: $button-height;
     padding: $button-padding;
-    background: var(--background);
     color: var(--color);
+    background: var(--background);
     border: var(--border);
-    border-radius: #{$button-border-radius};
-    transition: var(--BASE-TRANSITION-BACKGROUND);
+    border-radius: var(--border-radius);
+    font-family: var(--ui-font);
     cursor: pointer;
+    transition: all 200ms;
+
+    &:hover::before {
+      background: $state-hover;
+    }
+
+    &:focus::before {
+      background: $state-focus;
+      box-shadow: 0 0 0 .1em $state-focus-border;
+    }
+
+    &:active::before {
+      background: $state-focus;
+    }
+
+    &:active {
+      animation: push 300ms forwards;
+
+    }
+    &:disabled {
+      background: $state-disabled;
+      color: $state-disable-color;
+    }
 
     & > *:nth-child(2) {
-      margin-left: .5em;
+      margin-left: $gap;
+      margin-right: $gap;
     }
 
-    &__text {
-      display: inline-block;
-    }
-    &:focus {
-      outline: none;
-    }
-    &:active {
-      background: var(--BASE-PRIMARY-DARKER);
-      transition: all 300ms ;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: transparent;
+      z-index: 2;
+      border-radius: var(--border-radius);
     }
   }
+
+    //* Sizes
+  .ui-button {
+    &--tiny {
+      --size: var(--ui-size-tiny);
+    }
+    &--small {
+      --size: var(--ui-size-small);
+    }
+    &--medium {
+      --size: var(--ui-size-medium);
+    }
+    &--large {
+      --size: var(--ui-size-large);
+    }
+    &--giant {
+      --size: var(--ui-size-giant);
+    }
+  }
+
+  //* Variants
+  .ui-button {
+    &--outline, &--ghost {
+      --color: var(--ui-c-primary);
+      --background: transparent;
+      --border: #{map-get($border, 'width')} solid var(--ui-c-primary);
+
+      &:focus::before {
+        background: $state-focus;
+      }
+
+      &:active::before {
+        background: $state-focus;
+      }
+      &:hover::before {
+        background: $state-hover;
+      }
+    }
+
+    &--ghost {
+      border: none;
+    }
+  }
+
   .ui-button--reverse {
     & > *:nth-child(2) {
       order: 1;
     }
     & > *:nth-child(1) {
       order: 2;
-      margin-left: .5em;
-
+      margin-left: $gap;
     }
   }
+
+  @keyframes push {
+    50% {
+      transform: translateY(calc(var(--size) * .05)) scale(.99);
+    }
+  }
+
 </style>
 
 <template>
   <button :class="computedClasses" v-on="$listeners">
     <slot name="icon">
-      <ui-icon v-if="icon" :icon="icon" :size="iconSize" />
+      <ui-icon class="z-5" v-if="icon" :icon="icon" :size="iconSize" />
     </slot>
     <slot>
-      <span class="ui-button__text">{{computedText}}</span>
+      <span class="inline-block z-5">{{computedText}}</span>
     </slot>
   </button>
 </template>
@@ -86,8 +166,18 @@
       iconRight: {
         type: Boolean,
         default: false
-      }
+      },
 
+      //* Sizes?
+      tiny: Boolean,
+      small: Boolean,
+      medium: Boolean,
+      large: Boolean,
+      giant: Boolean,
+
+      //* Style
+      outline: Boolean,
+      ghost: Boolean
     },
     computed: {
       computedText() {
@@ -96,7 +186,15 @@
       computedClasses() {
         return {
           'ui-button': true,
-          'ui-button--reverse': this.iconRight
+          'ui-button--tiny': this.tiny,
+          'ui-button--small': this.small,
+          'ui-button--medium': this.medium,
+          'ui-button--large': this.large,
+          'ui-button--giant': this.giant,
+          'ui-button--outline': this.outline,
+          'ui-button--ghost': this.ghost,
+          'z-1': true
+
         }
       }
     },

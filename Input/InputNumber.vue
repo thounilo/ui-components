@@ -107,7 +107,7 @@
 
 <script>
 
-  import { minihash } from '../../assets/utils.js'
+  import { minihash } from '../assets/utils.js'
 
   export default {
     name: "zInputNumber",

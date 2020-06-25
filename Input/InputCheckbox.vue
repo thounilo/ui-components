@@ -1,6 +1,6 @@
 <style lang="scss" scoped>
 
-  @import '../../assets/_variables.scss';
+  @import '../assets/_variables.scss';
 
   .ui-input-c {
 
@@ -88,7 +88,7 @@
 
 <script>
 
-  import { minihash } from '../../assets/utils'
+  import { minihash } from '../assets/utils'
 
   export default {
     name: "qInputCheckbox",

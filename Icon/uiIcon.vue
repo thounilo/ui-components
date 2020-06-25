@@ -22,7 +22,7 @@
 
 <script>
 
-  import iconPath from '../../assets/Icons/symbols.svg'
+  import iconPath from '../assets/Icons/symbols.svg'
 
   export default {
     name: "ui-icon",
@@ -44,7 +44,10 @@
     },
     mounted() {
       if(!!this.size)
-        this.$refs.element.style.setProperty('--size', `${parseInt(this.size) * .25}rem`)
+        this.$refs.element.style.setProperty(
+          '--size',
+          `${parseInt(this.size) * .25}em`
+        )
     }
   }
 </script>

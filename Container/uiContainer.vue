@@ -6,6 +6,8 @@
     --x: flex-start;
     --y: flex-start;
     --direction: 'row';
+    --wrap: nowrap;
+
     display: var(--display);
 
     &__flex {
@@ -13,6 +15,7 @@
       flex-direction: var(--direction);
       justify-content: var(--x);
       align-items: var(--y);
+      flex-wrap: var(--wrap);
     }
   }
 
@@ -63,6 +66,10 @@
         type: String,
         default: ''
       },
+      wrap: {
+        type: Boolean,
+        default: false
+      },
 
     },
     computed: {
@@ -74,7 +81,11 @@
       }
     },
     mounted() {
-
+      if(this.wrap) {
+        setElementStyles(this.$refs.uiElement, {
+          '--wrap': 'wrap'
+        })
+      }
       if(this.flex) {
         if(this.direction === 'column') {
           setElementStyles(this.$refs.uiElement, {

@@ -1,6 +1,6 @@
 <style lang="scss">
 
-  @import '../../assets/_variables.scss';
+  @import '../assets/_variables.scss';
 
   .ui-input {
 
@@ -131,7 +131,7 @@
 
 <script>
 
-  import { minihash } from '../../assets/utils.js'
+  import { minihash } from '../assets/utils.js'
 
   export default {
     name: "ui-input",

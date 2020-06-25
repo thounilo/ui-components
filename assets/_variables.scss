@@ -17,9 +17,13 @@ $colors: (
   secondary:       hsl($base-hue + 90, $base-saturation, $base-lightness),
   dark:          hsl(0, 0%, 20%),
   light:         hsl(0, 0%, 90%),
+  light-darker:  hsl(0, 0%, 80%),
 );
 
+$base-font: 'Comfortaa';
+
 $border-radius: (
+  none: 0,
   sm: .25rem,
   md: .5rem,
   lg: 1rem,
@@ -52,6 +56,19 @@ $font: (
   size: 16px
 );
 
+$background-transition: background 300ms ease-out;
+
+$button-height: 2.25em;
+$button-padding: .25em 1.25em;
+
+$sizes: (
+  tiny: .75em,
+  small: .9em,
+  medium: 1em,
+  large: 1.25em,
+  giant: 1.5em,
+);
+
 $t: (
   color-primary: map-get($colors, 'primary'),
   color-primary-darker: map-get($colors, 'primary-darker'),
@@ -59,6 +76,8 @@ $t: (
   color-secondary: map-get($colors, 'secondary'),
   color-dark: map-get($colors, 'dark'),
   color-light: map-get($colors, 'light'),
+  color-light-darker: map-get($colors, 'light-darker'),
+
   border-radius: map-get($border-radius, 'sm'),
   border-color: map-get($colors, 'primary'),
   border-type: map-get($border, 'type'),

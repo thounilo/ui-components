@@ -2,6 +2,7 @@
 
   @import '_variables';
   @import '_helpers';
+  @import '_fonts.scss';
 
   //* ------
   //* Resets
@@ -27,6 +28,7 @@
   }
 
   body {
+
     padding: 0;
     margin: 0;
     font-family:  #{map-get($t, 'font-primary')};
@@ -39,11 +41,29 @@
     --BASE-BORDER-WIDTH: #{map-get($t, 'border-width')};
     --BASE-PRIMARY: #{map-get($t, 'color-primary')};
     --BASE-PRIMARY-DARKER: #{map-get($t, 'color-primary-darker')};
+    --BASE-PRIMARY-LIGHTER: #{map-get($t, 'color-primary-lighter')};
+
     --BASE-LIGHT: #{map-get($t, 'color-light')};
+    --BASE-LIGHT-DARKER: #{map-get($t, 'color-light-darker')};
 
     --BASE-FONT: #{map-get($t, 'font-primary')};
 
     --BASE-TRANSITION-BACKGROUND: background #{map-get($transition, 'background-duration') map-get($transition, 'background-easing')};
+
+    --ui-c-primary: #{map-get($colors, 'primary')};
+    --ui-c-light: #{map-get($colors, 'light')};
+
+    --ui-font: $base-font;
+
+    --ui-size-tiny:   #{map-get($sizes, 'tiny')};
+    --ui-size-small:  #{map-get($sizes, 'small')};
+    --ui-size-medium: #{map-get($sizes, 'medium')};
+    --ui-size-large:  #{map-get($sizes, 'large')};
+    --ui-size-giant:  #{map-get($sizes, 'giant')};
+  }
+
+  button:focus {
+    outline: none;
   }
 
   ul, li {
@@ -51,6 +71,7 @@
     padding: 0;
     margin: 0;
   }
+
   input {
     background: none;
     border: none;
