@@ -21,67 +21,36 @@ $colors: (
 );
 
 $base-font: 'Comfortaa';
+$base-font-size: 16px;
 
 $border-radius: (
   none: 0,
   sm: .25rem,
   md: .5rem,
   lg: 1rem,
-  circle: 50%
+  circle: 50%,
+  pill: 9999px
 );
 
-$input-text: (
-  height: 2.25rem,
-  width: 20em,
-  background: map-get($colors, 'primary'),
-  padding: .25rem .75rem,
+$sizes: (
+  tiny: .75rem,
+  small: .9rem,
+  medium: 1rem,
+  large: 1.25rem,
+  giant: 1.5rem,
 );
 
-$input-checkbox: (
-  size: 1.2rem
-);
+$state-hover: hsla(0, 0%, 100%, .05);
+$state-active: hsla(0, 0%, 0%, .05);
+$state-active-border: hsla(0, 0%, 50%, .3);
+$state-disabled: #ccc;
+$state-disable-color: #333;
 
-$transition: (
-  background-duration: 300ms,
-  background-easing: ease-out,
-);
+$input-text-height: 2.25em;
+$input-text-width: 20em;
+$input-text-padding: .75em 1em;
 
-$border: (
-  width: 2px,
-  type: solid
-);
-
-$font: (
-  primary: Comfortaa,
-  size: 16px
-);
-
-$background-transition: background 300ms ease-out;
+$input-checkbox-size: 1.2em;
 
 $button-height: 2.25em;
 $button-padding: .25em 1.25em;
-
-$sizes: (
-  tiny: .75em,
-  small: .9em,
-  medium: 1em,
-  large: 1.25em,
-  giant: 1.5em,
-);
-
-$t: (
-  color-primary: map-get($colors, 'primary'),
-  color-primary-darker: map-get($colors, 'primary-darker'),
-  color-primary-lighter: map-get($colors, 'primary-lighter'),
-  color-secondary: map-get($colors, 'secondary'),
-  color-dark: map-get($colors, 'dark'),
-  color-light: map-get($colors, 'light'),
-  color-light-darker: map-get($colors, 'light-darker'),
-
-  border-radius: map-get($border-radius, 'sm'),
-  border-color: map-get($colors, 'primary'),
-  border-type: map-get($border, 'type'),
-  border-width: map-get($border, 'width'),
-  font-primary: map-get($font, 'primary'),
-  font-base-size: map-get($font, 'size'),
-);

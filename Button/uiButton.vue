@@ -2,12 +2,6 @@
 
   @import '../assets/_variables.scss';
 
-  $state: map-get($colors, 'primary');
-  $state-hover: hsla(0, 0%, 100%, .05);
-  $state-focus: hsla(0, 0%, 0%, .05);
-  $state-focus-border: hsla(0, 0%, 50%, .3);
-  $state-disabled: #ccc;
-  $state-disable-color: #333;
   $gap: .35em;
   $transition-duration: 300ms;
 
@@ -39,18 +33,18 @@
     }
 
     &:focus::before {
-      background: $state-focus;
-      box-shadow: 0 0 0 .1em $state-focus-border;
+      background: $state-active;
+      box-shadow: 0 0 0 .1em $state-active-border;
     }
 
     &:active::before {
-      background: $state-focus;
+      background: $state-active;
     }
 
     &:active {
-      animation: push $transition-duration forwards;
-
+      animation: interaction $transition-duration forwards;
     }
+
     &:disabled {
       background: $state-disabled;
       color: $state-disable-color;
@@ -74,7 +68,7 @@
     }
   }
 
-    //* Sizes
+  //* Sizes
   .ui-button {
     &--tiny {
       --size: var(--ui-size-tiny);
@@ -98,22 +92,14 @@
     &--outline, &--ghost {
       --color: var(--ui-c-primary);
       --background: transparent;
-      --border: #{map-get($border, 'width')} solid var(--ui-c-primary);
+    }
 
-      &:focus::before {
-        background: $state-focus;
-      }
-
-      &:active::before {
-        background: $state-focus;
-      }
-      &:hover::before {
-        background: $state-hover;
-      }
+    &--outline {
+      --border: #{$base-border-width} solid var(--ui-c-primary);
     }
 
     &--ghost {
-      border: none;
+      --border: none;
     }
   }
 
@@ -127,9 +113,9 @@
     }
   }
 
-  @keyframes push {
+  @keyframes interaction {
     50% {
-      transform: translateY(calc(var(--size) * .05)) scale(.99);
+      transform: translateY( calc( var(--size) * .05)) scale(.99);
     }
   }
 
@@ -141,7 +127,7 @@
       <ui-icon class="z-5" v-if="icon" :icon="icon" :size="iconSize" />
     </slot>
     <slot>
-      <span class="inline-block z-5">{{computedText}}</span>
+      <span class="inline-block z-5 uppercase">{{ text }}</span>
     </slot>
   </button>
 </template>
@@ -180,9 +166,6 @@
       ghost: Boolean
     },
     computed: {
-      computedText() {
-        return this.text.toUpperCase()
-      },
       computedClasses() {
         return {
           'ui-button': true,
@@ -194,7 +177,6 @@
           'ui-button--outline': this.outline,
           'ui-button--ghost': this.ghost,
           'z-1': true
-
         }
       }
     },

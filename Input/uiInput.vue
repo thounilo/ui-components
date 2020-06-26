@@ -2,42 +2,33 @@
 
   @import '../assets/_variables.scss';
 
+  $label-font-size: .8em;
+  $message-font-size: .6em;
+
   .ui-input {
 
-    --height: #{map-get($input-text, 'height')};
-    --width:  #{map-get($input-text, 'width')};
+    --height: #{$input-text-height};
+    --width:  #{$input-text-width};
+    --border-radius: #{map-get($border-radius, 'sm')};
+    --border: none;
+    --background: var(--ui-c-primary);
+    --color:      var(--ui-c-light);
 
-    --border-radius: var(--BASE-BORDER-RADIUS);
-    --border-color:  var(--BASE-BORDER-COLOR);
-    --border-width:  var(--BASE-BORDER-WIDTH);
-
-    --background: var(--BASE-PRIMARY);
-    --color:      var(--BASE-LIGHT);
-
-    width:     100%;
+    width: 100%;
     max-width: var(--width);
-
     color: var(--color);
 
-    & input {
+    &__element {
 
+      position: relative;
       width: 100%;
-      height: var(--height);
-      padding: .25rem .5rem;
-
+      min-height: var(--height);
+      padding: #{$input-text-padding};
       color: currentColor;
       background: var(--background);
-      border: var(--border-width) solid var(--border-color);
       border-radius: var(--border-radius);
-
-      font-family: var(--BASE-FONT);
-      transition: var(--BASE-TRANSITION-BACKGROUND);
-
-      &:focus {
-        background: var(--BASE-PRIMARY-DARKER);
-        outline: none;
-        transition: var(--BASE-TRANSITION-BACKGROUND);
-      }
+      font-family: var(--ui-font);
+      font-size: .9rem;
 
       &::placeholder {
         color: #dbdbdb;
@@ -45,44 +36,68 @@
       }
     }
 
-    & label {
-      display: block;
-      margin-bottom: .5rem;
-      font-weight: bold;
-      font-size: .8rem;
+    &__element:focus, &__element:hover {
+      box-shadow: 0 0 0 .2em $state-active-border;
     }
 
     &__message {
-      font-size: .6rem;
-      margin-top: .5rem;
+      font-size: .6em;
+      margin-top: .5em;
       font-style: italic;
       display: inline-block;
     }
 
     &__icon {
       position: absolute;
-      right: .5rem;
+      right: .5em;
       top: 50%;
       transform: translateY(-50%)
     }
 
-    &--has-icon {
-      & input {
-        padding-right: 2.25rem;
-      }
+    & label {
+      display: block;
+      margin-bottom: .5em;
+      font-weight: bold;
+      font-size: .8em;
     }
-
-  //* Try styles
-    &--outline {
-      --border-color: var(--BASE-PRIMARY);
-      --background: transparent;
-    }
-  //* End
   }
 
-  .ui-input__light {
-    --background: var(--THEME-COLOR);
-    --color: #FFF;
+  .ui-input {
+    &--ghost, &--outline {
+      input {
+        --color: var(--ui-c-light);
+        --background: hsla(0, 0%, 50%, .1);
+      }
+    }
+    &--outline {
+      --border: #{$base-border-width} solid var(--ui-c-primary);
+      & input {
+        border: var(--border);
+      }
+    }
+    &--with-icon {
+      & input {
+        padding-right: 2.25em;
+      }
+    }
+  }
+
+  .ui-input {
+    &--tiny {
+      --size: var(--ui-size-tiny);
+    }
+    &--small {
+      --size: var(--ui-size-small);
+    }
+    &--medium {
+      --size: var(--ui-size-medium);
+    }
+    &--large {
+      --size: var(--ui-size-large);
+    }
+    &--giant {
+      --size: var(--ui-size-giant);
+    }
   }
 
 </style>
@@ -99,6 +114,7 @@
 
     <div class="relative">
       <input
+        class="ui-input__element"
         :id="computedId"
         :type="type"
         :placeholder="placeholder"
@@ -111,7 +127,7 @@
         ref="uiElement"
       />
 
-      <slot name="input-icon" >
+      <slot name="input-icon">
         <uiIcon class="ui-input__icon"
           v-if="hasIcon"
           @click="handleIconClick"
@@ -170,14 +186,16 @@
 
       // TODO
       //* Theme
-      light: {
-        type: Boolean,
-        default: false
-      },
-      outline: {
-        type: Boolean,
-        default: false
-      },
+      light: Boolean,
+      outline: Boolean,
+      ghost: Boolean,
+
+      //* Sizes?
+      tiny: Boolean,
+      small: Boolean,
+      medium: Boolean,
+      large: Boolean,
+      giant: Boolean,
 
       //* Attrs
       placeholder: {
@@ -216,12 +234,18 @@
     },
     computed: {
       computedClasses() {
-        console.log('this.outline', this.outline)
         return {
           'ui-input': true,
           'ui-input__light': !!this.light,
-          'ui-input--has-icon': !!this.icon,
+          'ui-input--with-icon': !!this.icon,
           'ui-input--outline': !!this.outline,
+          'ui-input--ghost': !!this.ghost,
+
+          'ui-input--tiny': !!this.tiny,
+          'ui-input--small': !!this.small,
+          'ui-input--medium': !!this.medium,
+          'ui-input--large': !!this.large,
+          'ui-input--giant': !!this.giant,
         }
       },
       computedId() {

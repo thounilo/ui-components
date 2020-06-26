@@ -11,5 +11,5 @@ export {default as uiToggle} from './Toggle/uiToggle.vue';
 export {default as uiSpinner} from './Loaders/Spinner.vue';
 
 
-export {default as InputCheckbox} from './Input/InputCheckbox.vue';
+export {default as uiCheckbox} from './Input/uiInputCheckbox.vue';
 export {default as InputNumber} from './Input/InputNumber.vue';
