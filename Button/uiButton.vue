@@ -115,7 +115,7 @@
 
   @keyframes interaction {
     50% {
-      transform: translateY( calc( var(--size) * .05)) scale(.99);
+      transform: translateY( calc( var(--size) * .1));
     }
   }
 

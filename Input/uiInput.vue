@@ -2,8 +2,10 @@
 
   @import '../assets/_variables.scss';
 
-  $label-font-size: .8em;
-  $message-font-size: .6em;
+  $label-font-size: .9em;
+  $message-font-size: .75em;
+  $placeholder-color: #dbdbdb;
+  $placeholder-size: .8em;
 
   .ui-input {
 
@@ -28,23 +30,17 @@
       background: var(--background);
       border-radius: var(--border-radius);
       font-family: var(--ui-font);
-      font-size: .9rem;
+      font-size: 1rem;
+
+      &:focus,
+      &:hover {
+        box-shadow: 0 0 0 .2em $state-active-border;
+      }
 
       &::placeholder {
-        color: #dbdbdb;
-        font-size: .75rem;
+        color: $placeholder-color;
+        font-size: $placeholder-size;
       }
-    }
-
-    &__element:focus, &__element:hover {
-      box-shadow: 0 0 0 .2em $state-active-border;
-    }
-
-    &__message {
-      font-size: .6em;
-      margin-top: .5em;
-      font-style: italic;
-      display: inline-block;
     }
 
     &__icon {
@@ -54,49 +50,48 @@
       transform: translateY(-50%)
     }
 
-    & label {
+    &__label {
       display: block;
       margin-bottom: .5em;
       font-weight: bold;
-      font-size: .8em;
+      font-size: $label-font-size;
+    }
+
+    &__message {
+      font-size: $message-font-size;
+      margin-top: .5em;
+      font-style: italic;
+      display: inline-block;
     }
   }
 
   .ui-input {
-    &--ghost, &--outline {
+
+    &--tiny   { --size: var(--ui-size-tiny);  }
+    &--small  { --size: var(--ui-size-small); }
+    &--medium { --size: var(--ui-size-medium);}
+    &--large  { --size: var(--ui-size-large); }
+    &--giant  { --size: var(--ui-size-giant); }
+
+    &--ghost,
+    &--outline {
       input {
         --color: var(--ui-c-light);
         --background: hsla(0, 0%, 50%, .1);
       }
     }
+
     &--outline {
       --border: #{$base-border-width} solid var(--ui-c-primary);
       & input {
         border: var(--border);
       }
     }
+
     &--with-icon {
       & input {
         padding-right: 2.25em;
       }
-    }
-  }
-
-  .ui-input {
-    &--tiny {
-      --size: var(--ui-size-tiny);
-    }
-    &--small {
-      --size: var(--ui-size-small);
-    }
-    &--medium {
-      --size: var(--ui-size-medium);
-    }
-    &--large {
-      --size: var(--ui-size-large);
-    }
-    &--giant {
-      --size: var(--ui-size-giant);
     }
   }
 
@@ -107,7 +102,7 @@
   <div :class="computedClasses">
 
     <slot name="label" >
-      <label v-if="label" :for="computedId">
+      <label class="ui-input__label" v-if="label" :for="computedId">
         {{label}}
       </label>
     </slot>
