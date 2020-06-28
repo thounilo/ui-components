@@ -11,7 +11,9 @@
     --checkmark-size: 50%;
 
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: row-reverse;
+    align-items: center;
     cursor: pointer;
 
     &__container {
@@ -38,16 +40,19 @@
         background: var(--ui-c-primary);
       }
       &:hover {
-        box-shadow: 0 0 0 .2em $state-active-border;
+        box-shadow: 0 0 0 $state-active-border-width $state-active-border;
       }
       &:focus-within {
-        box-shadow: 0 0 0 .2em $state-active-border;
+        box-shadow: 0 0 0 $state-active-border-width $state-active-border;
       }
     }
     &__label {
       margin-left: .5em;
       vertical-align: bottom;
       cursor: pointer;
+    }
+    &__label:hover ~ &__container {
+      box-shadow: 0 0 0 $state-active-border-width $state-active-border;
     }
   }
 
@@ -93,6 +98,7 @@
 <template>
 
   <div class="ui-checkbox">
+    <label class="ui-checkbox__label" :for="uuid">{{ label }}</label>
     <label :class="[
       'ui-checkbox__container',
       computedClass
@@ -112,7 +118,6 @@
         <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"/>
       </svg>
     </label>
-    <label class="ui-checkbox__label" :for="uuid">{{ label }}</label>
   </div>
 
 </template>

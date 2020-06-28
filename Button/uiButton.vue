@@ -35,7 +35,7 @@
 
     &:focus::before {
       background: $state-active;
-      box-shadow: 0 0 0 .1em $state-active-border;
+      box-shadow: 0 0 0 $state-active-border-width $state-active-border;
     }
 
     &:active::before {

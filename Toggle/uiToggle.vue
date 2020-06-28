@@ -18,8 +18,21 @@
     width: var(--width);
     height: var(--height);
 
-    &:focus-within > &__slider{
-      box-shadow: 0 0 0 .2em $state-active-border;
+    &:focus-within > &__slider, &:hover > &__slider {
+      box-shadow: 0 0 0 $state-active-border-width $state-active-border;
+    }
+
+    &__label:hover ~ & > &__slider {
+      box-shadow: 0 0 0 $state-active-border-width $state-active-border;
+    }
+
+    // &__label:hover {
+    //   box-shadow: 0 0 0 $state-active-border-width $state-active-border;
+    // }
+    &__container {
+      display: inline-flex;
+      flex-direction: row-reverse;
+      align-items: center;
     }
 
     &__slider {
@@ -47,7 +60,6 @@
     }
 
     &__label {
-      cursor: pointer;
       margin-left: .5em;
       display: inline-block;
       vertical-align: bottom;
@@ -72,7 +84,8 @@
 
 <template>
 
-  <div>
+  <div class="ui-toggle__container">
+    <label class="ui-toggle__label" :for="uuid">{{ label }}</label>
     <label class="ui-toggle">
       <input
         :id="uuid"
@@ -82,7 +95,6 @@
       />
       <span class="ui-toggle__slider"></span>
     </label>
-    <label class="ui-toggle__label" :for="uuid">{{ label }}</label>
   </div>
 
 </template>

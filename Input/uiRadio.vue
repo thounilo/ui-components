@@ -5,7 +5,8 @@
   .ui-radio {
 
     --size: 1.25em;
-    display: flex;
+    display: inline-flex;
+    flex-direction: row-reverse;
     align-items: center;
 
     &__input {
@@ -17,13 +18,13 @@
       border-radius: #{map-get($border-radius, 'circle')};
       overflow: hidden;
 
-      &:hover {
-        box-shadow: 0 0 0 .2em $state-active-border;
+      &:hover, &:focus-within {
+        box-shadow: 0 0 0 $state-active-border-width $state-active-border;
       }
+    }
 
-      &:focus-within {
-        box-shadow: 0 0 0 .2em $state-active-border;
-      }
+    &__label:hover ~ &__input {
+      box-shadow: 0 0 0 $state-active-border-width $state-active-border;
     }
 
     &__checkmark {
@@ -58,6 +59,7 @@
 
 <template>
   <div class="ui-radio">
+    <label class="ui-radio__label" :for="uuid">{{ label }}</label>
     <label :for="uuid" class="ui-radio__input">
       <input
         :value="value"
@@ -68,7 +70,6 @@
       >
       <span :class="[computedClass, 'ui-radio__checkmark']"></span>
     </label>
-    <label class="ui-radio__label" :for="uuid">{{ label }}</label>
   </div>
 </template>
 
