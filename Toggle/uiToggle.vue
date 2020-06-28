@@ -1,5 +1,7 @@
 <style lang="scss">
 
+  @import '../assets/_variables.scss';
+
   .ui-toggle {
 
     --width: 2.6em;
@@ -15,6 +17,10 @@
     display: inline-block;
     width: var(--width);
     height: var(--height);
+
+    &:focus-within > &__slider{
+      box-shadow: 0 0 0 .2em $state-active-border;
+    }
 
     &__slider {
       position: absolute;
@@ -65,8 +71,8 @@
 </style>
 
 <template>
-  <div>
 
+  <div>
     <label class="ui-toggle">
       <input
         :id="uuid"
@@ -78,6 +84,7 @@
     </label>
     <label class="ui-toggle__label" :for="uuid">{{ label }}</label>
   </div>
+
 </template>
 
 <script>
