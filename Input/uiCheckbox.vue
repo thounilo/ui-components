@@ -49,7 +49,6 @@
     &__label {
       margin-left: .5em;
       vertical-align: bottom;
-      cursor: pointer;
     }
     &__label:hover ~ &__container {
       box-shadow: 0 0 0 $state-active-border-width $state-active-border;
@@ -148,8 +147,8 @@
     },
     methods: {
       handleChange({target}) {
-        this.$emit('input', target.checked)
         this.isChecked = target.checked
+        this.$emit('input', target.checked)
       }
     }
   }

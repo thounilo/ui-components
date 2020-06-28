@@ -3,7 +3,7 @@
   @import '../assets/_variables.scss';
 
   .ui-radio {
-
+    // TODO Add animation to checkmark on appear
     --size: 1.25em;
     display: inline-flex;
     flex-direction: row-reverse;
@@ -32,6 +32,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      transform-origin: center center;
       width: 100%;
       height: 100%;
       width: 50%;
@@ -40,6 +41,7 @@
 
       &.is-checked {
         background: var(--ui-c-primary);
+        animation: radio-appear 200ms;
       }
     }
 
@@ -55,6 +57,23 @@
     }
   }
 
+  @keyframes radio-appear {
+    0% {
+      transform: scale(.5) translate(-50%, -50%);
+      opacity: 1;
+    }
+    60% {
+      transform: scale(1.2) translate(-50%, -50%);
+    }
+    80% {
+      transform: scale(.9) translate(-50%, -50%);
+    }
+    100% {
+      transform: scale(1) translate(-50%, -50%);
+      opacity: 1
+    }
+  }
+
 </style>
 
 <template>
@@ -62,11 +81,12 @@
     <label class="ui-radio__label" :for="uuid">{{ label }}</label>
     <label :for="uuid" class="ui-radio__input">
       <input
-        :value="value"
+        :value="computedValue"
         v-on:input="handleChange"
         :id="uuid"
         type="radio"
-        name="ui-radio"
+        :name="name"
+        :checked="isChecked"
       >
       <span :class="[computedClass, 'ui-radio__checkmark']"></span>
     </label>
@@ -79,7 +99,15 @@
 
   export default {
     name: "ui-radio",
-    props: {value: Boolean, label: String},
+    props: {
+      valueName: String,
+      value: String,
+      label: {
+        type: String,
+        required: true
+      },
+      name: String
+    },
     data() {
       return {
         isChecked: this.value
@@ -91,14 +119,20 @@
       },
       computedClass() {
         return this.isChecked ? 'is-checked' : ''
+      },
+      computedValue() {
+        return this.label
       }
     },
     methods: {
-      handleChange({target}) {
-        console.log('target', target)
-        this.isChecked = !!target.value
-        this.$emit('input', target.value)
+      handleChange() {
+        this.$emit('input', this.computedValue)
       },
     },
+    watch: {
+      value(val) {
+        this.isChecked = this.value === this.computedValue
+      }
+    }
   }
 </script>

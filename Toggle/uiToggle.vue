@@ -89,7 +89,7 @@
     <label class="ui-toggle">
       <input
         :id="uuid"
-        @input="$emit('input', $event)"
+        @input="$emit('input', $event.target.checked)"
         type="checkbox"
         :value="value"
       />

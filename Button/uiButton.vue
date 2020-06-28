@@ -13,12 +13,13 @@
     --border: none;
     --border-radius: #{map-get($border-radius, 'sm')};
     --padding: #{$button-padding};
+    --width: auto;
 
     font-size: var(--size);
     position: relative;
     display: flex;
     align-items: center;
-    width: initial;
+    width: var(--width);
     padding: var(--padding);
     color: var(--color);
     background: var(--background);
@@ -97,7 +98,7 @@
       --border: none;
     }
     &--square {
-      --padding: .75em;
+      --padding: .5em;
     }
     &--reverse {
       & > *:nth-child(2) {
@@ -107,6 +108,9 @@
         order: 2;
         margin-left: $gap;
       }
+    }
+    &--fluid {
+      --width: 100%;
     }
   }
 
@@ -150,7 +154,7 @@
         type: Boolean,
         default: false
       },
-
+      fluid: Boolean,
       //* Sizes?
       tiny: Boolean,
       small: Boolean,
@@ -174,6 +178,7 @@
           'ui-button--outline': this.outline,
           'ui-button--ghost': this.ghost,
           'ui-button--square': this.icon && !this.text,
+          'ui-button--fluid': this.fluid
         }
       }
     },
