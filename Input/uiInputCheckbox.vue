@@ -7,15 +7,16 @@
 
   .ui-checkbox {
 
-    --size: 1.5em;
+    --size: 1.25em;
     --checkmark-size: 50%;
 
     position: relative;
     display: inline-block;
+    cursor: pointer;
 
     &__container {
       position: relative;
-      display: flex;
+      display: inline-flex;
       justify-content: center;
       align-items: center;
       width: var(--size);
@@ -23,17 +24,15 @@
       background: #ccc;
       border-radius: #{map-get($border-radius, 'sm')};
       cursor: pointer;
-      z-index: 1;
 
       svg {
         width: var(--checkmark-size);
         height: var(--checkmark-size);
-        // pointer-events: none;
-        fill: #FFF;
-        animation: leave 200ms both;
+        fill: var(--ui-c-light);
+        animation: checkbox-leave 200ms both;
       }
       svg.isChecked {
-        animation: appear 200ms both;
+        animation: checkbox-appear 200ms both;
       }
       &.isChecked {
         background: var(--ui-c-primary);
@@ -44,6 +43,11 @@
       &:focus-within {
         box-shadow: 0 0 0 .2em $state-active-border;
       }
+    }
+    &__label {
+      margin-left: .5em;
+      vertical-align: bottom;
+      cursor: pointer;
     }
   }
 
@@ -60,7 +64,7 @@
   }
 
 
-  @keyframes appear {
+  @keyframes checkbox-appear {
     0% {
       transform: scale(0);
       opacity: 1;
@@ -77,12 +81,13 @@
     }
   }
 
-  @keyframes leave {
+  @keyframes checkbox-leave {
     100% {
       transform: scale(0);
       opacity: 0
     }
   }
+
 </style>
 
 <template>
@@ -92,12 +97,12 @@
       'ui-checkbox__container',
       computedClass
     ]"
-     for="cb"
+     :for="uuid"
      tabindex
     >
       <input
-        id="cb"
-        name="cb"
+        :id="uuid"
+        name="checkbox"
         type="checkbox"
         :value="value"
         ref="input"
@@ -107,6 +112,7 @@
         <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"/>
       </svg>
     </label>
+    <label class="ui-checkbox__label" :for="uuid">{{ label }}</label>
   </div>
 
 </template>

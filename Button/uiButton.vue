@@ -12,14 +12,14 @@
     --background: var(--ui-c-primary);
     --border: none;
     --border-radius: #{map-get($border-radius, 'sm')};
+    --padding: #{$button-padding};
 
     font-size: var(--size);
     position: relative;
     display: flex;
     align-items: center;
     width: initial;
-    height: $button-height;
-    padding: $button-padding;
+    padding: var(--padding);
     color: var(--color);
     background: var(--background);
     border: var(--border);
@@ -27,6 +27,7 @@
     font-family: var(--ui-font);
     cursor: pointer;
     transition: all $transition-duration;
+    z-index: 1;
 
     &:hover::before {
       background: $state-hover;
@@ -85,31 +86,27 @@
     &--giant {
       --size: var(--ui-size-giant);
     }
-  }
-
-  //* Variants
-  .ui-button {
     &--outline, &--ghost {
       --color: var(--ui-c-primary);
       --background: transparent;
     }
-
     &--outline {
       --border: #{$base-border-width} solid var(--ui-c-primary);
     }
-
     &--ghost {
       --border: none;
     }
-  }
-
-  .ui-button--reverse {
-    & > *:nth-child(2) {
-      order: 1;
+    &--square {
+      --padding: .75em;
     }
-    & > *:nth-child(1) {
-      order: 2;
-      margin-left: $gap;
+    &--reverse {
+      & > *:nth-child(2) {
+        order: 1;
+      }
+      & > *:nth-child(1) {
+        order: 2;
+        margin-left: $gap;
+      }
     }
   }
 
@@ -127,7 +124,7 @@
       <ui-icon class="z-5" v-if="icon" :icon="icon" :size="iconSize" />
     </slot>
     <slot>
-      <span class="inline-block z-5 uppercase">{{ text }}</span>
+      <span class="inline-block z-5 uppercase" v-if="text">{{ text }}</span>
     </slot>
   </button>
 </template>
@@ -176,7 +173,7 @@
           'ui-button--giant': this.giant,
           'ui-button--outline': this.outline,
           'ui-button--ghost': this.ghost,
-          'z-1': true
+          'ui-button--square': this.icon && !this.text,
         }
       }
     },

@@ -4,10 +4,10 @@
 
     --width: 2.6em;
     --height: 1.25em;
-    --cursor-size: calc(var(--height) * .8);
+    --cursor-size: calc(var(--height) * .75);
     --cursor-start: .2em;
-    --color-checked: var(--BASE-PRIMARY);
-    --color-unchecked: var(--BASE-LIGHT);
+    --color-checked: var(--ui-c-primary);
+    --color-unchecked: var(--ui-c-light);
     --color-background: #ccc;
     --transition-duration: 300ms;
 
@@ -15,14 +15,6 @@
     display: inline-block;
     width: var(--width);
     height: var(--height);
-
-    input:checked + &__slider {
-      background-color: var(--color-checked);
-    }
-
-    input:checked + &__slider:before {
-      transform: translateX( calc( var(--width) - var(--cursor-size) - (var(--cursor-start)*2)));
-    }
 
     &__slider {
       position: absolute;
@@ -40,12 +32,27 @@
       content: "";
       position: absolute;
       left: var(--cursor-start);
-      bottom: calc((var(--height) - var(--cursor-size)) / 2);
+      top: calc(( var(--height) - var(--cursor-size)) / 2);
       width: var(--cursor-size);
       height: var(--cursor-size);
       background-color: var(--color-unchecked);
       border-radius: var(--height);
       transition: var(--transition-duration);
+    }
+
+    &__label {
+      cursor: pointer;
+      margin-left: .5em;
+      display: inline-block;
+      vertical-align: bottom;
+    }
+
+    input:checked + &__slider {
+      background-color: var(--color-checked);
+    }
+
+    input:checked + &__slider:before {
+      transform: translateX( calc( var(--width) - var(--cursor-size) - (var(--cursor-start)*2)));
     }
 
     & input {
@@ -58,23 +65,33 @@
 </style>
 
 <template>
+  <div>
 
-  <label class="ui-toggle">
-    <input
-      @input="$emit('input', $event)"
-      type="checkbox"
-      :value="value"
-    />
-    <span class="ui-toggle__slider"></span>
-  </label>
-
+    <label class="ui-toggle">
+      <input
+        :id="uuid"
+        @input="$emit('input', $event)"
+        type="checkbox"
+        :value="value"
+      />
+      <span class="ui-toggle__slider"></span>
+    </label>
+    <label class="ui-toggle__label" :for="uuid">{{ label }}</label>
+  </div>
 </template>
 
 <script>
 
+  import { minihash } from "../assets/utils";
+
   export default {
     name: "ui-toggle",
-    props: { value: Boolean }
+    props: { value: Boolean, label: String },
+    computed: {
+      uuid() {
+        return minihash(8, 'lu')
+      },
+    },
   }
 
 </script>
