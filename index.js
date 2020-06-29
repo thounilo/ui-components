@@ -1,7 +1,8 @@
 
-
+//* Layout elements
 export {default as uiContainer} from './Container/uiContainer.vue';
 
+//* Icons and image elements
 export {default as uiIcon} from './Icon/uiIcon.vue';
 export {default as uiImage} from './Image/uiImage.vue';
 
@@ -12,10 +13,11 @@ export {default as uiToggle} from './Toggle/uiToggle.vue';
 export {default as uiCheckbox} from './Input/uiCheckbox.vue';
 export {default as uiRadio} from './Input/uiRadio.vue';
 export {default as InputNumber} from './Input/InputNumber.vue';
+
+//* Informative elements
 export {default as uiSnackbar} from './Snackbar/uiSnackbar.vue';
-
-
 export {default as uiOverlay} from './Overlay/uiOverlay.vue';
 
+//* Loader elements
 export {default as uiSpinner} from './Loaders/Spinner.vue';
 

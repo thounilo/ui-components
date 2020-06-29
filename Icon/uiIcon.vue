@@ -29,7 +29,7 @@
     props: {
       icon: {
         type: String,
-        default: 'ui-search-outline',
+        default: '',
         required: true
       },
       size: {
