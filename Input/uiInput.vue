@@ -34,7 +34,7 @@
 
       &:focus,
       &:hover {
-        box-shadow: 0 0 0 .2em $state-active-border;
+        box-shadow: $state-active-box-shadow;
       }
 
       &::placeholder {

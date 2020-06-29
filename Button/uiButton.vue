@@ -19,6 +19,7 @@
     position: relative;
     display: flex;
     align-items: center;
+    justify-content: center;
     width: var(--width);
     padding: var(--padding);
     color: var(--color);
@@ -36,7 +37,7 @@
 
     &:focus::before {
       background: $state-active;
-      box-shadow: 0 0 0 $state-active-border-width $state-active-border;
+      box-shadow: $state-active-box-shadow;
     }
 
     &:active::before {

@@ -2,9 +2,6 @@
 
   @import '../assets/_variables.scss';
 
-  $container-size: 1.5em;
-  $checkmark-size: 50%;
-
   .ui-checkbox {
 
     --size: 1.25em;
@@ -14,9 +11,9 @@
     display: inline-flex;
     flex-direction: row-reverse;
     align-items: center;
-    cursor: pointer;
 
     &__container {
+
       position: relative;
       display: inline-flex;
       justify-content: center;
@@ -39,11 +36,8 @@
       &.isChecked {
         background: var(--ui-c-primary);
       }
-      &:hover {
-        box-shadow: 0 0 0 $state-active-border-width $state-active-border;
-      }
-      &:focus-within {
-        box-shadow: 0 0 0 $state-active-border-width $state-active-border;
+      &:hover, &:focus-within {
+        box-shadow: $state-active-box-shadow;
       }
     }
     &__label {
@@ -51,7 +45,7 @@
       vertical-align: bottom;
     }
     &__label:hover ~ &__container {
-      box-shadow: 0 0 0 $state-active-border-width $state-active-border;
+      box-shadow: $state-active-box-shadow;
     }
   }
 

@@ -45,6 +45,8 @@ $state-active: hsla(0, 0%, 0%, .05);
 $state-active-border: hsla(0, 0%, 50%, .3);
 $state-active-border-width: .2em;
 
+$state-active-box-shadow: 0 0 0 $state-active-border-width $state-active-border;
+
 $state-disabled: #ccc;
 $state-disable-color: #333;
 

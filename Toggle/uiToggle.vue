@@ -19,22 +19,16 @@
     height: var(--height);
 
     &:focus-within > &__slider, &:hover > &__slider {
-      box-shadow: 0 0 0 $state-active-border-width $state-active-border;
+      box-shadow: $state-active-box-shadow;
     }
-
     &__label:hover ~ & > &__slider {
-      box-shadow: 0 0 0 $state-active-border-width $state-active-border;
+      box-shadow: $state-active-box-shadow;
     }
-
-    // &__label:hover {
-    //   box-shadow: 0 0 0 $state-active-border-width $state-active-border;
-    // }
     &__container {
       display: inline-flex;
       flex-direction: row-reverse;
       align-items: center;
     }
-
     &__slider {
       position: absolute;
       top: 0;
@@ -43,10 +37,7 @@
       bottom: 0;
       background-color: var(--color-background);
       border-radius: var(--height);
-      transition: var(--transition-duration);
-      cursor: pointer;
     }
-
     &__slider:before {
       content: "";
       position: absolute;
@@ -58,21 +49,17 @@
       border-radius: var(--height);
       transition: var(--transition-duration);
     }
-
     &__label {
       margin-left: .5em;
       display: inline-block;
       vertical-align: bottom;
     }
-
     input:checked + &__slider {
       background-color: var(--color-checked);
     }
-
     input:checked + &__slider:before {
       transform: translateX( calc( var(--width) - var(--cursor-size) - (var(--cursor-start)*2)));
     }
-
     & input {
       opacity: 0;
       width: 0;
