@@ -1,6 +1,6 @@
 
 //* Layout elements
-export {default as uiContainer} from './Container/uiContainer.vue';
+export {default as uiBox} from './Box/uiBox.vue';
 
 //* Icons and image elements
 export {default as uiIcon} from './Icon/uiIcon.vue';
