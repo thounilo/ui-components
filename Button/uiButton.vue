@@ -74,7 +74,7 @@
 <template>
   <button :class="computedClasses" v-on="$listeners">
     <slot name="icon">
-      <ui-icon class="z-5" v-if="icon" :icon="icon" :size="iconSize" />
+      <ui-icon class="z-5" v-if="icon" :icon="icon" :size="computedIconSize" />
     </slot>
     <slot>
       <span class="inline-block z-5 uppercase" v-if="text">{{ text }}</span>
@@ -129,6 +129,11 @@
           'ui-button--square': this.icon && !this.text,
           'ui-button--fluid': this.fluid
         }
+      },
+      computedIconSize() {
+        return typeof this.iconSize === 'string'
+          ? parseInt(this.iconSize)
+          : this.iconSize
       },
     },
   }
