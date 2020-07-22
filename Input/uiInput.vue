@@ -2,7 +2,6 @@
 
   @import '../assets/_variables.scss';
 
-  $label-font-size: .9em;
   $message-font-size: .75em;
   $placeholder-color: #dbdbdb;
   $placeholder-size: .8em;
@@ -11,7 +10,7 @@
 
     --height: #{$input-text-height};
     --width:  #{$input-text-width};
-    --border-radius: #{map-get($border-radius, 'sm')};
+    --border-radius: var(--ui-border-radius-sm);
     --border: none;
     --background: var(--ui-c-primary);
     --color:      var(--ui-c-light);
@@ -30,7 +29,7 @@
       background: var(--background);
       border-radius: var(--border-radius);
       font-family: var(--ui-font);
-      font-size: 1rem;
+      font-size: 1em;
 
       &:focus,
       &:hover {
@@ -53,12 +52,10 @@
     &__label {
       display: block;
       margin-bottom: .5em;
-      font-weight: bold;
-      font-size: $label-font-size;
     }
 
     &__message {
-      font-size: $message-font-size;
+      font-size: .75em;
       margin-top: .5em;
       font-style: italic;
       display: inline-block;
