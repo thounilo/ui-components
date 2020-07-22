@@ -13,6 +13,7 @@ export {default as uiToggle} from './Toggle/uiToggle.vue';
 export {default as uiCheckbox} from './Input/uiCheckbox.vue';
 export {default as uiRadio} from './Input/uiRadio.vue';
 export {default as InputNumber} from './Input/InputNumber.vue';
+export {default as uiSelect} from './Input/uiSelect.vue';
 
 //* Informative elements
 export {default as uiSnackbar} from './Snackbar/uiSnackbar.vue';

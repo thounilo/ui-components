@@ -35,11 +35,11 @@
 
     --ui-font: #{$base-font};
 
-    --ui-size-tiny:   #{map-get($sizes, 'tiny')};
-    --ui-size-small:  #{map-get($sizes, 'small')};
-    --ui-size-medium: #{map-get($sizes, 'medium')};
-    --ui-size-large:  #{map-get($sizes, 'large')};
-    --ui-size-giant:  #{map-get($sizes, 'giant')};
+    --ui-scale-tiny:   #{map-get($sizes, 'tiny')};
+    --ui-scale-small:  #{map-get($sizes, 'small')};
+    --ui-scale-medium: #{map-get($sizes, 'medium')};
+    --ui-scale-large:  #{map-get($sizes, 'large')};
+    --ui-scale-giant:  #{map-get($sizes, 'giant')};
 
     padding: 0;
     margin: 0;

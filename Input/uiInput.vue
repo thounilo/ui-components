@@ -102,7 +102,7 @@
   <div :class="computedClasses">
 
     <slot name="label" >
-      <label class="ui-input__label" v-if="label" :for="computedId">
+      <label class="ui-input__label" v-if="label" :for="computedID">
         {{label}}
       </label>
     </slot>
@@ -110,7 +110,8 @@
     <div class="relative">
       <input
         class="ui-input__element"
-        :id="computedId"
+        :list="list"
+        :id="computedID"
         :type="type"
         :placeholder="placeholder"
         :validate="validate"
@@ -160,7 +161,9 @@
           'search',
         ].some(t => t === type)
       },
-
+      for: {
+        type: String,
+      },
       //* Layout
       label: {
         type: String,
@@ -216,6 +219,9 @@
       id: {
         type: String
       },
+      list: {
+        type: String
+      },
 
       //* State
       value: {
@@ -243,11 +249,17 @@
           'ui-input--giant': !!this.giant,
         }
       },
-      computedId() {
+      uuid() {
         return this.id ? this.id : minihash(8, 'lu')
       },
       hasIcon() {
         return !!this.icon
+      },
+      computedID() {
+        if(this.for) {
+          return this.for
+        }
+        return this.uuid
       }
     },
     methods: {

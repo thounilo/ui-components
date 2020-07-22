@@ -1,21 +1,23 @@
 <style lang="scss">
 
   @import '../assets/_variables.scss';
+  @import '../assets/_common.scss';
 
   $gap: .35em;
   $transition-duration: 300ms;
 
   .ui-button {
 
-    --size: 1em;
-    --color: var(--ui-c-light);
-    --background: var(--ui-c-primary);
-    --border: none;
-    --border-radius: #{map-get($border-radius, 'sm')};
-    --padding: #{$button-padding};
     --width: auto;
 
-    font-size: var(--size);
+    --color: var(--ui-c-light);
+    --background: var(--ui-c-primary);
+
+    --border: none;
+    --border-radius: #{$b-r-sm};
+
+    --padding: #{$button-padding};
+
     position: relative;
     display: flex;
     align-items: center;
@@ -27,67 +29,19 @@
     border: var(--border);
     border-radius: var(--border-radius);
     font-family: var(--ui-font);
-    cursor: pointer;
-    transition: all $transition-duration;
-    z-index: 1;
+    overflow: hidden;
 
-    &:hover::before {
-      background: $state-hover;
-    }
+    @extend %scales-common;
 
-    &:focus::before {
-      background: $state-active;
-      box-shadow: $state-active-box-shadow;
-    }
-
-    &:active::before {
-      background: $state-active;
-    }
-
-    &:active {
-      animation: interaction $transition-duration forwards;
-    }
-
-    &:disabled {
-      background: $state-disabled;
-      color: $state-disable-color;
-    }
+    @include pseudo-states-for-interactive-element();
 
     & > *:nth-child(2) {
       margin-left: $gap;
       margin-right: $gap;
     }
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      background: transparent;
-      z-index: 2;
-      border-radius: var(--border-radius);
-    }
   }
 
-  //* Sizes
   .ui-button {
-    &--tiny {
-      --size: var(--ui-size-tiny);
-    }
-    &--small {
-      --size: var(--ui-size-small);
-    }
-    &--medium {
-      --size: var(--ui-size-medium);
-    }
-    &--large {
-      --size: var(--ui-size-large);
-    }
-    &--giant {
-      --size: var(--ui-size-giant);
-    }
     &--outline, &--ghost {
       --color: var(--ui-c-primary);
       --background: transparent;
@@ -112,12 +66,6 @@
     }
     &--fluid {
       --width: 100%;
-    }
-  }
-
-  @keyframes interaction {
-    50% {
-      transform: translateY( calc( var(--size) * .1));
     }
   }
 
@@ -181,7 +129,7 @@
           'ui-button--square': this.icon && !this.text,
           'ui-button--fluid': this.fluid
         }
-      }
+      },
     },
   }
 </script>

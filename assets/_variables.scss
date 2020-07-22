@@ -1,28 +1,31 @@
 
 @import '_helpers';
 
-//* New style of defining variables
-
-$base-hue:        100;
-$base-saturation: 40%;
-$base-lightness:  55%;
+//* Base
 
 $base-border-width:  2px;
 $base-border-radius: .25rem;
 
+$base-font: 'Comfortaa';
+$base-font-size: 16px;
+
+
+//* Coloring
+$h: 100;
+$s: 40%;
+$l: 55%;
+
 $colors: (
-  primary:         hsl($base-hue,      $base-saturation, $base-lightness),
-  primary-darker:  hsl($base-hue,      $base-saturation, $base-lightness - 10,),
-  primary-lighter: hsl($base-hue,      $base-saturation, $base-lightness + 10,),
-  secondary:       hsl($base-hue + 90, $base-saturation, $base-lightness),
+  primary:         hsl($h,      $s, $l),
+  primary-darker:  hsl($h,      $s, $l - 10,),
+  primary-lighter: hsl($h,      $s, $l + 10,),
+  secondary:       hsl($h + 90, $s, $l),
   dark:          hsl(0, 0%, 20%),
   light:         hsl(0, 0%, 90%),
   light-darker:  hsl(0, 0%, 80%),
 );
 
-$base-font: 'Comfortaa';
-$base-font-size: 16px;
-
+//* Border
 $border-radius: (
   none: 0,
   sm: .25rem,
@@ -32,6 +35,15 @@ $border-radius: (
   pill: 9999px
 );
 
+$b-r-none:   0;
+$b-r-sm:     .25rem;
+$b-r-md:     .5rem;
+$b-r-lg:     1rem;
+$b-r-circle: 50%;
+$b-r-pill:   10000px;
+
+
+//* Common sizes
 $sizes: (
   tiny: .75rem,
   small: .9rem,
@@ -40,20 +52,20 @@ $sizes: (
   giant: 1.5rem,
 );
 
+
+//* State
 $state-hover: hsla(0, 0%, 100%, .05);
 $state-active: hsla(0, 0%, 0%, .05);
 $state-active-border: hsla(0, 0%, 50%, .3);
 $state-active-border-width: .2em;
-
 $state-active-box-shadow: 0 0 0 $state-active-border-width $state-active-border;
-
 $state-disabled: #ccc;
 $state-disable-color: #333;
 
+//* Input
 $input-text-height: 2.25em;
 $input-text-width: 20em;
 $input-text-padding: .75em;
-
 $input-checkbox-size: 1.2em;
 
 $button-padding: .5em 1em;
