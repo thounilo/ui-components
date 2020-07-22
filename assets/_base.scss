@@ -35,6 +35,10 @@
 
     --ui-font: #{$base-font};
 
+    @each $prop, $value in $border-radius {
+      --ui-border-radius-#{$prop}: $value;
+    }
+
     --ui-scale-tiny:   #{map-get($sizes, 'tiny')};
     --ui-scale-small:  #{map-get($sizes, 'small')};
     --ui-scale-medium: #{map-get($sizes, 'medium')};
