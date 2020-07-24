@@ -1,7 +1,5 @@
 <style lang="scss">
 
-  //* First and second element gets global border-radius
-
   .ui-button-group {
 
     --border-radius: var(--ui-border-radius-lg, .25em);
