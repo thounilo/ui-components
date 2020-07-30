@@ -3,8 +3,10 @@
   .ui-button-group {
 
     --border-radius: var(--ui-border-radius-lg, .25em);
+    --background: transparent;
 
     display: flex;
+    background: var(--background);
 
     & button:first-child {
       border-radius: var(--border-radius) 0 0 var(--border-radius);
