@@ -10,9 +10,11 @@
     &__label {
       margin-left: 0.5rem;
       font-size: calc(var(--scale) * 1em);
+    }
+    &__label,
+    &__input {
       cursor: pointer;
     }
-
     &__input {
       position: relative;
       display: inline-block;
@@ -20,7 +22,6 @@
       width: calc(var(--scale) * 1.25em);
       height: calc(var(--scale) * 1.25em);
       border-radius: var(--ui-border-radius-circle);
-      overflow: hidden;
 
       &:hover,
       &:focus-within {
@@ -36,10 +37,10 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%) scale(0.5);
       width: 70%;
       height: 70%;
       border-radius: var(--ui-border-radius-circle);
+      transform: translate(-50%, -50%) scale(0.5);
       transition: all 180ms ease-in-out;
     }
     &--is-checked {
