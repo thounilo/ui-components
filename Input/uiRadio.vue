@@ -13,10 +13,9 @@
     }
     &__input {
       position: relative;
-      display: inline-block;
-      background: var(--ui-c-light);
       width: calc(var(--scale) * 1.25em);
       height: calc(var(--scale) * 1.25em);
+      background: var(--ui-c-light-subtle);
       border-radius: var(--ui-border-radius-circle);
 
       &:hover,
@@ -53,17 +52,22 @@
 <template>
   <div class="ui-radio">
     <label class="ui-radio__label" :for="uuid">{{ label }}</label>
-    <label :for="uuid" class="ui-radio__input">
+    <label class="ui-radio__input" :for="uuid">
       <input
         class="hide-input"
         :value="label"
-        v-on:input="handleChange"
         :id="uuid"
         type="radio"
         :name="name"
         :checked="isChecked"
+        v-on:input="handleChange"
       />
-      <div :class="['ui-radio__checkmark', isChecked ? 'ui-radio--is-checked' : '']"></div>
+      <div
+        :class="[
+          'ui-radio__checkmark',
+          isChecked ? 'ui-radio--is-checked' : '',
+        ]"
+      ></div>
     </label>
   </div>
 </template>

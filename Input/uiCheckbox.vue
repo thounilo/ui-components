@@ -1,150 +1,99 @@
 <style lang="scss">
-
   @import '../assets/_variables.scss';
 
   .ui-checkbox {
-
-    --size: 1.25em;
-    --checkmark-size: 50%;
-
-    position: relative;
+    --scale: 1;
     display: inline-flex;
     flex-direction: row-reverse;
     align-items: center;
 
-    &__container {
-
+    &__label {
+      margin-left: 0.5em;
+      font-size: calc(var(--scale) * 1em);
+    }
+    &__input {
       position: relative;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      width: var(--size);
-      height: var(--size);
-      background: #ccc;
-      border-radius: #{map-get($border-radius, 'sm')};
-      cursor: pointer;
+      width: calc(var(--scale) * 1.25em);
+      height: calc(var(--scale) * 1.25em);
+      background: var(--ui-c-light-subtle);
+      border-radius: var(--ui-border-radius-sm);
 
-      svg {
-        width: var(--checkmark-size);
-        height: var(--checkmark-size);
-        fill: var(--ui-c-light);
-        animation: checkbox-leave 200ms both;
-      }
-      svg.isChecked {
-        animation: checkbox-appear 200ms both;
-      }
-      &.isChecked {
-        background: var(--ui-c-primary);
-      }
-      &:hover, &:focus-within {
+      &:hover,
+      &:focus-within {
         box-shadow: $state-active-box-shadow;
       }
     }
+    &__input,
     &__label {
-      margin-left: .5em;
-      vertical-align: bottom;
+      cursor: pointer;
     }
-    &__label:hover ~ &__container {
+    &__label:hover ~ &__input {
       box-shadow: $state-active-box-shadow;
     }
-  }
-
-  .ui-checkbox input {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-  }
-
-
-  @keyframes checkbox-appear {
-    0% {
-      transform: scale(0);
-      opacity: 1;
+    &__checkmark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 70%;
+      height: 70%;
+      transform: translate(-50%, -50%) scale(0.5);
+      border-radius: var(--ui-border-radius-sm);
+      transition: all 180ms ease-in-out;
     }
-    60% {
-      transform: scale(1.2);
-    }
-    80% {
-      transform: scale(.9)
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1
+    &--is-checked {
+      background: var(--ui-c-primary);
+      transform: translate(-50%, -50%) scale(1);
     }
   }
-
-  @keyframes checkbox-leave {
-    100% {
-      transform: scale(0);
-      opacity: 0
-    }
-  }
-
 </style>
 
 <template>
-
   <div class="ui-checkbox">
     <label class="ui-checkbox__label" :for="uuid">{{ label }}</label>
-    <label :class="[
-      'ui-checkbox__container',
-      computedClass
-    ]"
-     :for="uuid"
-     tabindex
-    >
+    <label class="ui-checkbox__input" :for="uuid">
       <input
-        :id="uuid"
-        name="checkbox"
-        type="checkbox"
+        class="hide-input"
         :value="value"
-        ref="input"
+        :id="uuid"
+        type="checkbox"
         v-on:input="handleChange($event)"
       />
-      <svg :class="computedClass" xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" width="24" height="24" viewBox="0 0 24 24">
-        <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"/>
-      </svg>
+      <div
+        :class="[
+          'ui-checkbox__checkmark',
+          isChecked ? 'ui-checkbox--is-checked' : '',
+        ]"
+      ></div>
     </label>
   </div>
-
 </template>
 
 <script>
-
-  import { minihash } from "../assets/utils";
+  import { minihash } from '../assets/utils'
 
   export default {
-    name: "ui-checkbox",
+    name: 'ui-checkbox',
     inheritAttrs: false,
     data() {
       return {
-        isChecked: null
+        isChecked: null,
       }
     },
     props: {
       value: Boolean,
-      label: String
+      label: String,
+      checked: Boolean,
     },
     computed: {
       uuid() {
         return minihash(8, 'lu')
       },
-      computedClass() {
-        return this.isChecked ? 'isChecked' : ''
-      },
     },
     methods: {
-      handleChange({target}) {
+      handleChange({ target }) {
         this.isChecked = target.checked
         this.$emit('input', target.checked)
-      }
-    }
+      },
+    },
   }
-
 </script>
