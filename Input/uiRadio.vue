@@ -11,10 +11,6 @@
       margin-left: 0.5rem;
       font-size: calc(var(--scale) * 1em);
     }
-    &__label,
-    &__input {
-      cursor: pointer;
-    }
     &__input {
       position: relative;
       display: inline-block;
@@ -27,6 +23,10 @@
       &:focus-within {
         box-shadow: $state-active-box-shadow;
       }
+    }
+    &__label,
+    &__input {
+      cursor: pointer;
     }
 
     &__label:hover ~ &__input {
@@ -56,7 +56,7 @@
     <label :for="uuid" class="ui-radio__input">
       <input
         class="hide-input"
-        :value="computedValue"
+        :value="label"
         v-on:input="handleChange"
         :id="uuid"
         type="radio"
@@ -74,12 +74,11 @@
   export default {
     name: 'ui-radio',
     props: {
-      valueName: String,
-      value: String,
       label: {
         type: String,
         required: true,
       },
+      value: String,
       name: String,
     },
     data() {
@@ -91,21 +90,15 @@
       uuid() {
         return minihash(8, 'lu')
       },
-      computedIsCheckedClass() {
-        return this.isChecked ? 'is-checked' : ''
-      },
-      computedValue() {
-        return this.label
-      },
     },
     methods: {
       handleChange() {
-        this.$emit('input', this.computedValue)
+        this.$emit('input', this.label)
       },
     },
     watch: {
       value(val) {
-        this.isChecked = this.value === this.computedValue
+        this.isChecked = this.value === this.label
       },
     },
   }
