@@ -1,6 +1,6 @@
-
 @import '_variables.scss';
 @import '_keyframes.scss';
+
 
 
 //* Buttons, Button-like icons, input elements.
@@ -19,7 +19,7 @@
   //? Adds new css-prop to element
   // --z = z-index
 
-  cursor: pointer;
+  cursor  : pointer;
   position: relative;
   overflow: hidden;
 
@@ -37,44 +37,47 @@
 
   &:disabled {
     background: $state-disabled;
-    color: $state-disable-color;
+    color     : $state-disable-color;
   }
 
   //* Visible interaction are shown in this element
   &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    content   : '';
+    position  : absolute;
+    top       : 0;
+    left      : 0;
+    bottom    : 0;
+    right     : 0;
     background: transparent;
-    z-index: calc( var(--z) + 1);
+    z-index   : calc(var(--z) + 1);
   }
 
-  &:hover::before  {
+  &:hover::before {
     background: $state-hover;
   }
+
   &:active::before,
   &:focus::before {
     background: $state-active;
   }
+
   &:focus::before {
     box-shadow: $state-active-box-shadow;
   }
+
   //! Should capture all?
-  & > * {
-    z-index: calc( var(--z) + 2);
+  &>* {
+    z-index: calc(var(--z) + 2);
   }
 }
 
 
 @mixin interactive-hover($z: null) {
 
-   //? Adds new css-prop to element
+  //? Adds new css-prop to element
   // --z = z-index
 
-  cursor: pointer;
+  cursor  : pointer;
   position: relative;
   overflow: hidden;
 
@@ -88,26 +91,81 @@
 
   //* Visible interaction are shown in this element
   &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    content   : '';
+    position  : absolute;
+    top       : 0;
+    left      : 0;
+    bottom    : 0;
+    right     : 0;
     background: transparent;
-    z-index: calc( var(--z) + 1);
+    z-index   : calc(var(--z) + 1);
   }
-  &:hover::before  {
+
+  &:hover::before {
     background: $state-hover;
   }
 }
 
 
+
+
+@mixin interactable($hover: null, $focus: null, $active: null) {
+
+  cursor  : pointer;
+  position: relative;
+  overflow: hidden;
+
+  --z: 1;
+
+  //* Visible interaction are shown in this element
+  &::before {
+    content   : '';
+    position  : absolute;
+    top       : 0;
+    left      : 0;
+    bottom    : 0;
+    right     : 0;
+    background: transparent;
+    z-index   : calc(var(--z) + 1);
+  }
+
+  //* End for base props
+
+  //* Hover
+
+  @if $hover not null or not false {
+    &:hover::before {
+      background: $state-hover;
+    }
+  }
+
+  //* Focus
+
+  @if $focus not null or not false {
+    &:focus::before {
+      background: $state-active;
+    }
+  }
+
+  //* Active
+
+  @if $active not null or not false {
+    &:active::before {
+      background: $state-active;
+    }
+
+    &:active::before {
+      animation: background-click-effect 300ms;
+    }
+  }
+
+}
+
 @mixin scrollbar() {
   &::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-    background-color: rgba(0,0,0,0);
+    width                : 8px;
+    height               : 8px;
+    background-color     : rgba(0, 0, 0, 0);
     -webkit-border-radius: 100px;
   }
 
@@ -116,20 +174,22 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(0,0,0,0.2);
+    background           : rgba(0, 0, 0, 0.2);
     -webkit-border-radius: 100px;
   }
+
   &::-webkit-scrollbar-thumb:active {
-    background: rgba(0,0,0,0.4);
+    background           : rgba(0, 0, 0, 0.4);
     -webkit-border-radius: 100px;
   }
 
   /* add vertical min-height & horizontal min-width */
   &::-webkit-scrollbar-thumb:vertical {
-  min-height: 10px;
+    min-height: 10px;
   }
+
   &::-webkit-scrollbar-thumb:horizontal {
-  min-width: 10px;
+    min-width: 10px;
   }
 }
 
@@ -138,42 +198,46 @@
   //? Adds new css-prop
   //  --scale
 
-  --scale: 1;
-  font-size: calc( var(--scale) * 1em );
+  --scale  : 1;
+  font-size: calc(var(--scale) * 1em);
 
   &--tiny {
     --scale: var(--ui-scale-tiny);
   }
+
   &--small {
     --scale: var(--ui-scale-small);
   }
+
   &--medium {
     --scale: var(--ui-scale-medium);
   }
+
   &--large {
     --scale: var(--ui-scale-large);
   }
+
   &--giant {
     --scale: var(--ui-scale-giant);
   }
 }
 
 @mixin py($p: null) {
-  padding-top: $p;
+  padding-top   : $p;
   padding-bottom: $p;
 }
 
 @mixin px($p: null) {
-  padding-left: $p;
+  padding-left : $p;
   padding-right: $p;
 }
 
 @mixin my($m: null) {
-  margin-top: $m;
+  margin-top   : $m;
   margin-bottom: $m;
 }
 
 @mixin px($m: null) {
-  margin-left: $m;
+  margin-left : $m;
   margin-right: $m;
 }

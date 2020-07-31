@@ -1,75 +1,92 @@
+@import '_variables';
+@import '_helpers';
+@import '_fonts';
+@import '_common';
 
+//* ------
+//* Resets
+//* ------
 
-  @import '_variables';
-  @import '_helpers';
-  @import '_fonts.scss';
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
 
-  //* ------
-  //* Resets
-  //* ------
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin     : 0;
+  line-height: 90%;
+}
 
-  *,
-  *:after,
-  *:before {
-    box-sizing: border-box;
+a {
+  color: #{map-get($colors, 'primary')};
+}
+
+a:visited {
+  color: #{map-get($colors, 'primary-darker')};
+}
+
+body {
+
+  --ui-c-primary: #{map-get($colors, 'primary')};
+  --ui-c-light  : #{map-get($colors, 'light')};
+  --ui-c-dark   : #{map-get($colors, 'dark')};
+
+  --ui-font: #{$base-font};
+
+  @each $prop,
+  $value in $border-radius {
+    --ui-border-radius-#{$prop}: #{$value};
   }
 
-  h1, h2, h3, h4, h5, h6, p {
-    margin: 0;
-    line-height: 90%;
-  }
+  --ui-scale-tiny  : #{map-get($sizes, 'tiny')};
+  --ui-scale-small : #{map-get($sizes, 'small')};
+  --ui-scale-medium: #{map-get($sizes, 'medium')};
+  --ui-scale-large : #{map-get($sizes, 'large')};
+  --ui-scale-giant : #{map-get($sizes, 'giant')};
 
-  a {
-    color: #{map-get($colors, 'primary')};
-  }
+  //? MAYBE ?
+  --ui-c-theme-font          : #FFF;
+  --ui-c-theme-font-subtle   : #FFF;
+  --ui-c-theme-font-highlight: #FFF;
 
-  a:visited {
-    color: #{map-get($colors, 'primary-darker')};
-  }
+  @include sass-to-props($text-colors);
 
-  body {
+  font-family: var(--ui-font);
+  color      : var(--ui-c-light);
+  background : var(--ui-c-dark);
+  font-size  : #{$base-font-size};
 
-    --ui-c-primary: #{map-get($colors, 'primary')};
-    --ui-c-light: #{map-get($colors, 'light')};
-    --ui-c-dark: #{map-get($colors, 'dark')};
+}
 
-    --ui-font: #{$base-font};
+body {
+  padding: 0;
+  margin : 0;
+}
 
-    @each $prop, $value in $border-radius {
-      --ui-border-radius-#{$prop}: #{$value};
-    }
+button:focus,
+input:focus {
+  outline: none;
+}
 
-    --ui-scale-tiny:   #{map-get($sizes, 'tiny')};
-    --ui-scale-small:  #{map-get($sizes, 'small')};
-    --ui-scale-medium: #{map-get($sizes, 'medium')};
-    --ui-scale-large:  #{map-get($sizes, 'large')};
-    --ui-scale-giant:  #{map-get($sizes, 'giant')};
+ul,
+li {
+  list-style: none;
+  padding   : 0;
+  margin    : 0;
+}
 
-    padding: 0;
-    margin: 0;
-    font-family: var(--ui-font);
-    color: var(--ui-c-light);
-    background: var(--ui-c-dark);
-    font-size: #{$base-font-size};
+input {
+  background: none;
+  border    : none;
+}
 
-  }
-
-  button:focus,
-  input:focus {
-    outline: none;
-  }
-
-  ul, li {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  input {
-    background: none;
-    border: none;
-  }
-
-  label {
-    cursor: pointer;
-  }
+label {
+  cursor: pointer;
+}

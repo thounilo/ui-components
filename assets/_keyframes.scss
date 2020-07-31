@@ -1,6 +1,23 @@
+@import '_variables';
+
 
 @keyframes element-active {
   25% {
-    transform: translateY( calc( var(--size, 1) * .1em) );
+    transform: translateY(calc(var(--size, 1) * .1em));
+  }
+}
+
+
+@keyframes background-click-effect {
+  0% {
+    background: $state-hover;
+  }
+
+  50% {
+    background: hsla(0, 0%, 33%, .4);
+  }
+
+  100% {
+    background: $state-active;
   }
 }

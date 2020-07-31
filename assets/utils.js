@@ -10,7 +10,7 @@
  */
 
 
-export const minihash = ( length = 10, include = 'luns' ) => {
+export const minihash = (length = 10, include = 'luns') => {
 
   let chars, c, r = ''
 
@@ -23,8 +23,8 @@ export const minihash = ( length = 10, include = 'luns' ) => {
 
   c = [...include].map(_ => chars[_]).join('')
 
-  while(length--)
-    r += c.charAt( Math.floor( Math.random() * c.length) )
+  while (length--)
+    r += c.charAt(Math.floor(Math.random() * c.length))
 
   return r
 }
@@ -43,20 +43,20 @@ export const minihashFactory = opts => {
 
   let _c = ''
   const _length = opts && opts.length
-        ? opts.length
-        : 10
+    ? opts.length
+    : 10
   const _charset = opts && opts.charset && typeof opts.charset === 'object'
-        ? opts.charset
-        : {}
+    ? opts.charset
+    : {}
   const _include = opts && opts.include && typeof opts.include === 'string' && opts.include.length
-        ? opts.include
-        : 'luns'
+    ? opts.include
+    : 'luns'
 
-  if(typeof opts === 'string') {
+  if (typeof opts === 'string') {
     _c = opts
   }
 
-  if(typeof opts === 'object' || !opts) {
+  if (typeof opts === 'object' || !opts) {
 
     let chars = Object.assign({}, {
       l: 'abcdefghijklmnopqrstuvwxyz',
@@ -72,9 +72,9 @@ export const minihashFactory = opts => {
   return {
     generate(length) {
       let r = '',
-          l = length || _length
-      while(l--)
-        r += _c.charAt( Math.floor( Math.random() * _c.length) )
+        l = length || _length
+      while (l--)
+        r += _c.charAt(Math.floor(Math.random() * _c.length))
       return r
     }
   }

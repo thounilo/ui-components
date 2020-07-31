@@ -1,5 +1,4 @@
 <style lang="scss">
-
 @import "../assets/_variables.scss";
 @import "../assets/_common.scss";
 
@@ -7,8 +6,8 @@ $gap: 0.35em;
 $transition-duration: 300ms;
 
 .ui-button {
-
   --width: auto;
+
   --color: var(--ui-c-light);
   --background: var(--ui-c-primary);
 
@@ -29,6 +28,8 @@ $transition-duration: 300ms;
   border-radius: var(--border-radius);
   font-family: var(--ui-font);
   overflow: hidden;
+
+  @extend %scales-common;
 
   @include interactable($hover: true, $focus: true, $active: true);
 
