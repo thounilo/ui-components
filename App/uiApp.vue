@@ -16,7 +16,7 @@
 </style>
 
 <template>
-  <div class="ui-app scroll-y">
+  <div class="ui-app">
     <slot></slot>
   </div>
 </template>
