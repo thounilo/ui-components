@@ -1,79 +1,52 @@
 <style lang="scss">
-
   @import '../assets/_variables.scss';
 
   .ui-radio {
-    // TODO Add animation to checkmark on appear
-    --size: 1.25em;
+    --scale: 1;
     display: inline-flex;
     flex-direction: row-reverse;
     align-items: center;
 
+    &__label {
+      margin-left: 0.5rem;
+      font-size: calc(var(--scale) * 1em);
+      cursor: pointer;
+    }
+
     &__input {
-      display: inline-block;
       position: relative;
-      background: #ccc;
-      width: var(--size);
-      height: var(--size);
-      border-radius: #{map-get($border-radius, 'circle')};
+      display: inline-block;
+      background: var(--ui-c-light);
+      width: calc(var(--scale) * 1.25em);
+      height: calc(var(--scale) * 1.25em);
+      border-radius: var(--ui-border-radius-circle);
       overflow: hidden;
 
-      &:hover, &:focus-within {
-        box-shadow: 0 0 0 $state-active-border-width $state-active-border;
+      &:hover,
+      &:focus-within {
+        box-shadow: $state-active-box-shadow;
       }
     }
 
     &__label:hover ~ &__input {
-      box-shadow: 0 0 0 $state-active-border-width $state-active-border;
+      box-shadow: $state-active-box-shadow;
     }
 
     &__checkmark {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
-      transform-origin: center center;
-      width: 100%;
-      height: 100%;
-      width: 50%;
-      height: 50%;
-      border-radius: #{map-get($border-radius, 'circle')};
-
-      &.is-checked {
-        background: var(--ui-c-primary);
-        animation: radio-appear 200ms;
-      }
+      transform: translate(-50%, -50%) scale(0.5);
+      width: 70%;
+      height: 70%;
+      border-radius: var(--ui-border-radius-circle);
+      transition: all 180ms ease-in-out;
     }
-
-    & input {
-      width: 0;
-      height: 0;
-      margin: 0;
-      opacity: 0
-    }
-
-    &__label {
-      margin-left: .5em;
+    &--is-checked {
+      background: var(--ui-c-primary);
+      transform: translate(-50%, -50%) scale(1);
     }
   }
-
-  @keyframes radio-appear {
-    0% {
-      transform: scale(.5) translate(-50%, -50%);
-      opacity: 1;
-    }
-    60% {
-      transform: scale(1.2) translate(-50%, -50%);
-    }
-    80% {
-      transform: scale(.9) translate(-50%, -50%);
-    }
-    100% {
-      transform: scale(1) translate(-50%, -50%);
-      opacity: 1
-    }
-  }
-
 </style>
 
 <template>
@@ -81,48 +54,48 @@
     <label class="ui-radio__label" :for="uuid">{{ label }}</label>
     <label :for="uuid" class="ui-radio__input">
       <input
+        class="hide-input"
         :value="computedValue"
         v-on:input="handleChange"
         :id="uuid"
         type="radio"
         :name="name"
         :checked="isChecked"
-      >
-      <span :class="[computedClass, 'ui-radio__checkmark']"></span>
+      />
+      <div :class="['ui-radio__checkmark', isChecked ? 'ui-radio--is-checked' : '']"></div>
     </label>
   </div>
 </template>
 
 <script>
-
-  import { minihash } from "../assets/utils";
+  import { minihash } from '../assets/utils'
 
   export default {
-    name: "ui-radio",
+    name: 'ui-radio',
     props: {
       valueName: String,
       value: String,
       label: {
         type: String,
-        required: true
+        required: true,
       },
-      name: String
+      name: String,
     },
     data() {
       return {
-        isChecked: this.value
+        isChecked: this.value,
       }
     },
     computed: {
       uuid() {
         return minihash(8, 'lu')
       },
-      computedClass() {
+      computedIsCheckedClass() {
         return this.isChecked ? 'is-checked' : ''
       },
       computedValue() {
         return this.label
-      }
+      },
     },
     methods: {
       handleChange() {
@@ -132,7 +105,7 @@
     watch: {
       value(val) {
         this.isChecked = this.value === this.computedValue
-      }
-    }
+      },
+    },
   }
 </script>
