@@ -13,20 +13,7 @@ $state-active-box-shadow: 0 0 0 $state-active-border-width $state-active-border;
 $state-disabled: #ccc;
 $state-disable-color: #333;
 
-//* Input
-$input-text-height: 2.25em;
-$input-text-width: 20em;
-$input-text-padding: 0.75em;
-$input-checkbox-size: 1.2em;
-
-$button-padding: 0.5em 1em;
-
-$text-colors: (
-  ui-c-theme-font: hsl(0, 0%, 88%),
-  ui-c-theme-font-subtle: hsl(0, 0%, 81%),
-  ui-c-theme-font-highlight: hsl(0, 0%, 94%),
-);
-
-$breakpoint-small: 20em;
-$breakpoint-medium: 48em;
-$breakpoint-large: 64em;
+$breakpoint-handheld: 20em;
+$breakpoint-tablet: 48em;
+$breakpoint-laptop: 64em;
+$breakpoint-screen: 120em;

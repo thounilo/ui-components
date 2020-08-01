@@ -33,7 +33,7 @@
     &__option {
       @include interactable($hover: true);
       padding: 0.5em 0.75em;
-      font-size: calc(var(--scale) * 0.8em);
+      font-size: calc(var(--scale) * 0.9em);
     }
 
     &--fluid {

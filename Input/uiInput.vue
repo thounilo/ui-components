@@ -5,13 +5,13 @@
   $message-font-size: 0.75em;
 
   .ui-input {
-    --height: #{$input-text-height};
-    --width: #{$input-text-width};
+    --height: auto;
+    --width: 20em;
     --border-radius: var(--ui-border-radius-sm);
     --border: none;
     --background: var(--ui-c-transparent-light-5);
     --color: var(--ui-c-light);
-    --padding: #{$input-text-padding};
+    --padding: 0.5em 0.75em;
     --scale: 1;
 
     width: 100%;

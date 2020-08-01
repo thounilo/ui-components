@@ -46,10 +46,10 @@
 
   @if $focus != null {
     &:focus::before {
-      background-color: var(--ui-c-transparent-light-10);
+      background-color: var(--ui-c-transparent-dark-10);
     }
     &:focus-within::before {
-      background-color: var(--ui-c-transparent-light-10);
+      background-color: var(--ui-c-transparent-dark-10);
     }
   }
 

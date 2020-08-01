@@ -21,6 +21,7 @@
       height: var(--input-size);
       background: var(--ui-c-light-subtle);
       border-radius: var(--border-radius);
+      transition: box-shadow 180ms;
 
       &:hover,
       &:focus-within {

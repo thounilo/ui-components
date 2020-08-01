@@ -23,6 +23,8 @@
       height: var(--input-height);
       border-radius: var(--border-radius);
       overflow: hidden;
+      transition: box-shadow 180ms;
+
       &:hover,
       &:focus-within {
         box-shadow: $state-active-box-shadow;

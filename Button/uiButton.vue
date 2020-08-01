@@ -11,7 +11,7 @@
     --border: none;
     --border-radius: var(--ui-border-radius-sm);
 
-    --padding: #{$button-padding};
+    --padding: 0.25em 0.75em;
 
     --scale: 1;
     --gap: 0.35em;
