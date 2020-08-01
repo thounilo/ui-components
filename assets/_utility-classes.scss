@@ -1,4 +1,3 @@
-
 $margins: (
   m: margin,
   mt: margin-top,
@@ -12,12 +11,10 @@ $paddings: (
   pt: padding-top,
   pl: padding-left,
   pb: padding-bottom,
-  pr: padding-right
+  pr: padding-right,
 );
 
-
 @for $i from 1 through 16 {
-
   $size: #{$i * 0.25}rem;
 
   //* Margins
@@ -26,10 +23,12 @@ $paddings: (
       #{$prop}: $size;
     }
   }
+
   .#{mx}-#{$i} {
     margin-left: $size;
     margin-right: $size;
   }
+
   .#{my}-#{$i} {
     margin-top: $size;
     margin-bottom: $size;
@@ -41,10 +40,12 @@ $paddings: (
       #{$prop}: $size;
     }
   }
+
   .#{px}-#{$i} {
     padding-left: $size;
     padding-right: $size;
   }
+
   .#{py}-#{$i} {
     padding-top: $size;
     padding-bottom: $size;
@@ -54,6 +55,7 @@ $paddings: (
   .#{w}-#{$i} {
     width: $size;
   }
+
   .#{h}-#{$i} {
     height: $size;
   }
@@ -101,29 +103,44 @@ $paddings: (
 .flex {
   display: flex;
 }
+
 .block {
   display: block;
 }
+
 .inline {
   display: inline;
 }
+
 .inline-block {
   display: inline-block;
 }
+
 .hide {
   display: none;
+}
+
+.hide-input {
+  width: 0;
+  height: 0;
+  margin: 0;
+  opacity: 0;
+  padding: 0;
 }
 
 //* Sizing
 .w-full {
   width: 100%;
 }
+
 .w-screen {
   width: 100vw;
 }
+
 .h-screen {
   height: 100vh;
 }
+
 .h-full {
   height: 100%;
 }
@@ -137,11 +154,37 @@ $paddings: (
   width: 100vw;
   height: 100vh;
 }
+
 .full-screen {
   width: 100vw;
   height: 100vh;
 }
+
 .scroll-y {
   overflow: hidden;
   overflow-y: scroll;
 }
+
+@mixin foobar() {
+  :root {
+    //* Dark
+    @for $i from 1 through 20 {
+      $propName: ui-c-transparent-dark-#{$i * 5};
+      $alpha: ($i / 2) / 10;
+      $value: hsla(0, 0%, 0%, $alpha);
+
+      --#{$propName}: #{$value};
+    }
+
+    //* Light
+    @for $i from 1 through 20 {
+      $propName: ui-c-transparent-light-#{$i * 5};
+      $alpha: ($i / 2) / 10;
+      $value: hsla(0, 0%, 100%, $alpha);
+
+      --#{$propName}: #{$value};
+    }
+  }
+}
+
+@include foobar();

@@ -2,91 +2,43 @@
 @import '_helpers';
 @import '_fonts';
 @import '_common';
+@import 'variables/_base-colors';
+@import '_resets';
 
-//* ------
-//* Resets
-//* ------
+:root {
 
-*,
-*:after,
-*:before {
-  box-sizing: border-box;
-}
+  --ui-c-primary:           #{$c-primary};
+  --ui-c-primary-subtle:    #{$c-primary-subtle};
+  --ui-c-primary-highlight: #{$c-primary-highlight};
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-  margin     : 0;
-  line-height: 90%;
-}
+  --ui-c-light:             #{$c-light};
+  --ui-c-light-subtle:      #{$c-light-subtle};
+  --ui-c-light-highlight:   #{$c-light-highlight};
 
-a {
-  color: #{map-get($colors, 'primary')};
-}
+  --ui-c-dark:              #{$c-dark};
+  --ui-c-dark-subtle:       #{$c-dark-subtle};
+  --ui-c-dark-highlight:    #{$c-dark-highlight};
 
-a:visited {
-  color: #{map-get($colors, 'primary-darker')};
+  --ui-font: 'Rubik', sans-serif;
+  --ui-font-size: 16px;
+
+  --ui-border-radius-none:   0;
+  --ui-border-radius-sm:     .25em;
+  --ui-border-radius-md:     .5em;
+  --ui-border-radius-lg:     1em;
+  --ui-border-radius-circle: 50%;
+  --ui-border-radius-pill:   1000px;
+  
+  //* Theming
+  --ui-c-theme-font:            var(--ui-c-light);
+  --ui-c-theme-font-subtle:     var(--ui-c-light-subtle);
+  --ui-c-theme-font-highlight:  var(--ui-c-light-highlight);
+  --ui-c-theme-background:      var(--ui-c-dark-subtle);
 }
 
 body {
-
-  --ui-c-primary: #{map-get($colors, 'primary')};
-  --ui-c-light  : #{map-get($colors, 'light')};
-  --ui-c-dark   : #{map-get($colors, 'dark')};
-
-  --ui-font: #{$base-font};
-
-  @each $prop,
-  $value in $border-radius {
-    --ui-border-radius-#{$prop}: #{$value};
-  }
-
-  --ui-scale-tiny  : #{map-get($sizes, 'tiny')};
-  --ui-scale-small : #{map-get($sizes, 'small')};
-  --ui-scale-medium: #{map-get($sizes, 'medium')};
-  --ui-scale-large : #{map-get($sizes, 'large')};
-  --ui-scale-giant : #{map-get($sizes, 'giant')};
-
-  //? MAYBE ?
-  --ui-c-theme-font          : #FFF;
-  --ui-c-theme-font-subtle   : #FFF;
-  --ui-c-theme-font-highlight: #FFF;
-
-  @include sass-to-props($text-colors);
-
   font-family: var(--ui-font);
-  color      : var(--ui-c-light);
-  background : var(--ui-c-dark);
-  font-size  : #{$base-font-size};
-
-}
-
-body {
-  padding: 0;
-  margin : 0;
-}
-
-button:focus,
-input:focus {
-  outline: none;
-}
-
-ul,
-li {
-  list-style: none;
-  padding   : 0;
-  margin    : 0;
-}
-
-input {
-  background: none;
-  border    : none;
-}
-
-label {
-  cursor: pointer;
+  color: var(--ui-c-theme-font);
+  background: var(--ui-c-dark);
+  font-size: var(--ui-font-size);
 }

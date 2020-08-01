@@ -1,71 +1,66 @@
 <style lang="scss">
+  @import '../assets/_variables.scss';
+  @import '../assets/_common.scss';
 
-@import "../assets/_variables.scss";
-@import "../assets/_common.scss";
-
-$gap: 0.35em;
-$transition-duration: 300ms;
-
-.ui-button {
-
-  --width: auto;
-  --color: var(--ui-c-light);
-  --background: var(--ui-c-primary);
-
-  --border: none;
-  --border-radius: #{$b-r-sm};
-
-  --padding: #{$button-padding};
-
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--width);
-  padding: var(--padding);
-  color: var(--color);
-  background: var(--background);
-  border: var(--border);
-  border-radius: var(--border-radius);
-  font-family: var(--ui-font);
-  overflow: hidden;
-
-  @include interactable($hover: true, $focus: true, $active: true);
-
-  & > *:nth-child(2) {
-    margin-left: $gap;
-    margin-right: $gap;
-  }
-}
-
-.ui-button {
-  &--outline,
-  &--ghost {
-    --color: var(--ui-c-primary);
+  .ui-button {
+    --width: auto;
+    --height: auto;
+    --color: var(--ui-c-light);
     --background: transparent;
-  }
-  &--outline {
-    --border: #{$base-border-width} solid var(--ui-c-primary);
-  }
-  &--ghost {
+
     --border: none;
-  }
-  &--square {
-    --padding: 0.5em;
-  }
-  &--reverse {
+    --border-radius: var(--ui-border-radius-sm);
+
+    --padding: #{$button-padding};
+
+    --scale: 1;
+    --gap: 0.35em;
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+
+    width: var(--width);
+    height: var(--height);
+    padding: var(--padding);
+    color: var(--color);
+    background: var(--background);
+    border: var(--border);
+    border-radius: var(--border-radius);
+    font-family: var(--ui-font);
+    font-size: calc(var(--scale) * 1em);
+    overflow: hidden;
+
+    @include interactable($hover: true, $focus: true, $active: true);
+
     & > *:nth-child(2) {
-      order: 1;
-    }
-    & > *:nth-child(1) {
-      order: 2;
-      margin-left: $gap;
+      margin-left: var(--gap);
+      margin-right: var(--gap);
     }
   }
-  &--fluid {
-    --width: 100%;
+
+  .ui-button {
+    &--outline,
+    &--ghost {
+      --color: var(--ui-c-primary);
+      --background: transparent;
+    }
+    &--fill {
+      --background: var(--ui-c-primary);
+      --color: var(--ui-c-light);
+    }
+    &--outline {
+      --border: #{$base-border-width} solid var(--ui-c-primary);
+    }
+    &--square {
+      --padding: 0.25em;
+    }
+    &--fluid {
+      --width: 100%;
+    }
   }
-}
 </style>
 
 <template>
@@ -74,64 +69,52 @@ $transition-duration: 300ms;
       <ui-icon class="z-5" v-if="icon" :icon="icon" :size="computedIconSize" />
     </slot>
     <slot>
-      <span class="inline-block z-5 uppercase" v-if="text">{{ text }}</span>
+      <span class="inline-block uppercase" v-if="text">{{ text }}</span>
     </slot>
   </button>
 </template>
 
 <script>
-export default {
-  name: "ui-button",
-  components: { uiIcon: () => import("../Icon/uiIcon") },
-  props: {
-    text: {
-      type: String,
-      default: "",
-    },
-    icon: {
-      type: String,
-      default: "",
-    },
-    iconSize: {
-      type: Number,
-      default: 5,
-    },
-    iconRight: {
-      type: Boolean,
-      default: false,
-    },
-    fluid: Boolean,
-    //* Sizes?
-    tiny: Boolean,
-    small: Boolean,
-    medium: Boolean,
-    large: Boolean,
-    giant: Boolean,
+  export default {
+    name: 'ui-button',
+    components: { uiIcon: () => import('../Icon/uiIcon') },
+    props: {
+      text: {
+        type: String,
+        default: '',
+      },
+      icon: {
+        type: String,
+        default: '',
+      },
+      iconSize: {
+        type: [Number, String],
+        default: 5,
+      },
+      // iconRight: Boolean,
 
-    //* Style
-    outline: Boolean,
-    ghost: Boolean,
-  },
-  computed: {
-    computedClasses() {
-      return {
-        "ui-button": true,
-        "ui-button--tiny": this.tiny,
-        "ui-button--small": this.small,
-        "ui-button--medium": this.medium,
-        "ui-button--large": this.large,
-        "ui-button--giant": this.giant,
-        "ui-button--outline": this.outline,
-        "ui-button--ghost": this.ghost,
-        "ui-button--square": this.icon && !this.text,
-        "ui-button--fluid": this.fluid,
-      };
+      //* Style
+      fluid: Boolean,
+      outline: Boolean,
+      ghost: Boolean,
+      fill: Boolean,
     },
-    computedIconSize() {
-      return typeof this.iconSize === "string"
-        ? parseInt(this.iconSize)
-        : this.iconSize;
+    computed: {
+      computedClasses() {
+        return {
+          'ui-button': true,
+          'ui-button--outline': this.outline,
+          'ui-button--ghost': this.ghost,
+          'ui-button--fill': this.fill,
+          'ui-button--square': this.icon && !this.text,
+          'ui-button--fluid': this.fluid,
+        }
+      },
+      computedIconSize() {
+        return typeof this.iconSize === 'string'
+          ? parseInt(this.iconSize)
+          : this.iconSize
+      },
     },
-  },
-};
+  }
 </script>

@@ -1,127 +1,116 @@
 <style lang="scss">
-
   @import '../assets/_variables.scss';
+  @import '../assets/_common';
 
-  $message-font-size: .75em;
-  $placeholder-color: #dbdbdb;
-  $placeholder-size: .8em;
+  $message-font-size: 0.75em;
 
   .ui-input {
-
     --height: #{$input-text-height};
-    --width:  #{$input-text-width};
+    --width: #{$input-text-width};
     --border-radius: var(--ui-border-radius-sm);
     --border: none;
-    --background: var(--ui-c-primary);
-    --color:      var(--ui-c-light);
+    --background: var(--ui-c-transparent-light-5);
+    --color: var(--ui-c-light);
+    --padding: #{$input-text-padding};
+    --scale: 1;
 
     width: 100%;
     max-width: var(--width);
     color: var(--color);
 
     &__element {
-
       position: relative;
       width: 100%;
       min-height: var(--height);
-      padding: #{$input-text-padding};
+      padding: var(--padding);
       color: currentColor;
       background: var(--background);
       border-radius: var(--border-radius);
       font-family: var(--ui-font);
-      font-size: 1em;
-
-      &:focus,
-      &:hover {
-        box-shadow: $state-active-box-shadow;
-      }
+      font-size: calc(var(--scale) * 1em);
+      border: var(--border);
 
       &::placeholder {
-        color: $placeholder-color;
-        font-size: $placeholder-size;
+        color: var(--ui-c-theme-font-subtle);
+        font-size: calc(var(--scale) * 0.9em);
       }
+    }
+
+    &__input {
+      @include interactable($hover: true, $focus: true);
     }
 
     &__icon {
       position: absolute;
-      right: .5em;
+      right: 0.5em;
       top: 50%;
-      transform: translateY(-50%)
+      transform: translateY(-50%);
     }
 
     &__label {
       display: block;
-      margin-bottom: .5em;
+      margin-bottom: 0.5em;
+      font-size: calc(var(--scale) * 1em);
     }
 
     &__message {
-      font-size: .75em;
-      margin-top: .5em;
+      font-size: calc(var(--scale) * 0.75em);
+      margin-top: 0.5em;
       font-style: italic;
       display: inline-block;
     }
   }
 
   .ui-input {
-
-    &--tiny   { --size: var(--ui-size-tiny);  }
-    &--small  { --size: var(--ui-size-small); }
-    &--medium { --size: var(--ui-size-medium);}
-    &--large  { --size: var(--ui-size-large); }
-    &--giant  { --size: var(--ui-size-giant); }
-
-    &--ghost,
     &--outline {
-      input {
-        --color: var(--ui-c-light);
-        --background: hsla(0, 0%, 50%, .1);
-      }
-    }
-
-    &--outline {
+      --color: var(--ui-c-light);
+      --background: var(--ui-c-transparent-light-5);
       --border: #{$base-border-width} solid var(--ui-c-primary);
-      & input {
-        border: var(--border);
-      }
     }
 
+    &--fill {
+      --background: var(--ui-c-primary);
+      &:focus-within {
+        & input {
+          z-index: 0;
+        }
+      }
+    }
     &--with-icon {
       & input {
         padding-right: 2.25em;
       }
     }
   }
-
 </style>
 
 <template>
-
   <div :class="computedClasses">
-
-    <slot name="label" >
-      <label class="ui-input__label" v-if="label" :for="computedID">
-        {{label}}
-      </label>
+    <slot name="label">
+      <label class="ui-input__label" v-if="label" :for="computedID">{{
+        label
+      }}</label>
     </slot>
 
-    <div class="relative">
+    <div class="ui-input__input">
       <input
         class="ui-input__element"
-        :list="list"
         :id="computedID"
+        :value="value"
         :type="type"
         :placeholder="placeholder"
         :validate="validate"
         :autofocus="autofocus"
         :required="required"
         :disabled="disabled"
-        :value="value"
-        v-on:input="$emit('input', $event.target.value)"
+        :spellcheck="spellcheck"
         ref="uiElement"
+        v-on:input="$emit('input', $event.target.value)"
       />
 
       <slot name="input-icon">
-        <uiIcon class="ui-input__icon"
+        <uiIcon
+          class="ui-input__icon"
           v-if="hasIcon"
           @click="handleIconClick"
           :icon="icon"
@@ -130,33 +119,24 @@
       </slot>
     </div>
 
-    <span class="ui-input__message" v-if="message">
-      {{message}}
-    </span>
-
+    <span class="ui-input__message" v-if="message">{{ message }}</span>
   </div>
-
 </template>
 
 <script>
-
   import { minihash } from '../assets/utils.js'
 
   export default {
-    name: "ui-input",
+    name: 'ui-input',
     components: { uiIcon: () => import('../Icon/uiIcon.vue') },
     props: {
       type: {
         type: String,
         default: 'text',
-        validator: type => [
-          'text',
-          'password',
-          'email',
-          'url',
-          'tel',
-          'search',
-        ].some(t => t === type)
+        validator: type =>
+          ['text', 'password', 'email', 'url', 'tel', 'search'].some(
+            t => t === type
+          ),
       },
       for: {
         type: String,
@@ -164,70 +144,50 @@
       //* Layout
       label: {
         type: String,
-        default: ''
+        default: '',
       },
       message: {
         type: String,
-        default: ''
+        default: '',
       },
 
-      icon: {
-        type: String,
-      },
+      icon: String,
       iconSize: {
         type: [Number, String],
-        default: 5
+        default: 5,
       },
 
       // TODO
       //* Theme
       light: Boolean,
       outline: Boolean,
-      ghost: Boolean,
-
-      //* Sizes?
-      tiny: Boolean,
-      small: Boolean,
-      medium: Boolean,
-      large: Boolean,
-      giant: Boolean,
+      fluid: Boolean,
+      fill: Boolean,
 
       //* Attrs
       placeholder: {
         type: String,
-        default: ''
+        default: '',
       },
-      validate: {
+      validate: Boolean,
+      autofocus: Boolean,
+      required: Boolean,
+      disabled: Boolean,
+      spellcheck: {
         type: Boolean,
-        default: false
+        default: false,
       },
-      autofocus: {
-        type: Boolean,
-        default: false
-      },
-      required: {
-        type: Boolean,
-        default: false
-      },
-      disabled: {
-        type: Boolean,
-        default: false
-      },
-      id: {
-        type: String
-      },
-      list: {
-        type: String
-      },
+      id: String,
 
       //* State
       value: {
-        type: String
+        type: String,
+        default: '',
       },
       // TODO
       state: {
         type: Boolean,
-        default: null
+        default: null,
       },
     },
     computed: {
@@ -237,13 +197,8 @@
           'ui-input__light': !!this.light,
           'ui-input--with-icon': !!this.icon,
           'ui-input--outline': !!this.outline,
-          'ui-input--ghost': !!this.ghost,
-
-          'ui-input--tiny': !!this.tiny,
-          'ui-input--small': !!this.small,
-          'ui-input--medium': !!this.medium,
-          'ui-input--large': !!this.large,
-          'ui-input--giant': !!this.giant,
+          'ui-input--fill': this.fill,
+          'w-full': !!this.fluid,
         }
       },
       uuid() {
@@ -253,17 +208,13 @@
         return !!this.icon
       },
       computedID() {
-        if(this.for) {
-          return this.for
-        }
-        return this.uuid
-      }
+        return this.for ? this.for : this.uuid
+      },
     },
     methods: {
       handleIconClick(e) {
-        console.log('e', e)
         this.$emit('click:icon', e)
-      }
-    }
+      },
+    },
   }
 </script>

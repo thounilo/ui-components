@@ -1,87 +1,91 @@
 <style lang="scss">
-
   @import '../assets/_common.scss';
 
-
   .ui-select {
-    --height: 12em;
+    --scale: 1;
+    --height: 8em;
+    --width: 20em;
+    --input-scale: var(--scale);
+    --input-width: var(--width);
 
-    max-width: 18em;
+    max-width: var(--width);
     width: 100%;
-    border-radius: .25em;
+    border-radius: var(--ui-border-radius-sm);
     overflow: hidden;
 
-    input {
-      width: 100%;
-    }
-    datalist {
-      border: none;
-      // background: var(--ui-c-dark);
-      color: var(--ui-c-light);
-      font: var(--ui-font);
-      option {
-        border: none;
-      }
+    &__input {
+      --border-radius: 0;
+      --scale: var(--input-scale);
+      --width: var(--input-width);
+      font-size: calc(var(--scale) * 1em);
     }
 
     &__options {
-      background: var(--ui-c-dark);
       height: 100%;
+      padding: 0.5em 0;
+      background: var(--ui-c-dark);
       min-height: var(--height);
       max-height: var(--height);
-      overflow-y:scroll;
-      background: hsla(0, 0%, 50%, .1);
+      background: var(--ui-c-transparent-dark-10);
       @include scrollbar();
     }
 
     &__option {
-      @include interactive-hover();
-      // @include py(.75em);
-      padding: .75em ;
+      @include interactable($hover: true);
+      padding: 0.5em 0.75em;
+      font-size: calc(var(--scale) * 0.8em);
+    }
+
+    &--fluid {
+      --width: 100%;
     }
   }
 </style>
 
 <template>
-  <div class="ui-select">
-    <uiInput ghost
-      style="--border-radius: 0"
+  <div :class="['ui-select', fluid ? 'ui-select--fluid' : '']">
+    <uiInput
+      ghost
+      style=""
+      class="ui-select__input"
       type="text"
-      list="datalistInput"
       :for="uuid"
       :label="label"
       v-model="inputValue"
+      :placeholder="placeholder"
     />
     <div class="ui-select__options">
-      <div class="ui-select__option"
+      <div
+        class="ui-select__option"
         @click="onClick(option)"
         v-for="option in opts"
         :key="option"
       >
-        {{option}}
+        {{ option }}
       </div>
     </div>
   </div>
 </template>
 
 <script>
-
-  import { minihash } from "../assets/utils";
-  import { uiInput } from "../index";
+  import { minihash } from '../assets/utils'
+  import { uiInput } from '../index'
 
   export default {
-    name: "ui-select",
+    name: 'ui-select',
     props: {
       label: {
         type: String,
-        default: ''
+        default: '',
       },
       size: Number,
       options: Array,
       behavior: {
         type: String,
-        default: 'event' // input
-      }
+        default: 'event', // input
+      },
+      placeholder: String,
+      fluid: Boolean,
     },
     components: {
       uiInput,
@@ -100,12 +104,11 @@
     },
     methods: {
       onClick(e) {
-
-        if(this.behavior === 'event') {
+        if (this.behavior === 'event') {
           this.inputValue = ''
         }
 
-        if(this.behavior === 'input') {
+        if (this.behavior === 'input') {
           this.inputValue = e
         }
 
@@ -114,7 +117,6 @@
         })
 
         this.$emit('onSelect', e)
-
       },
     },
     mounted() {
@@ -126,7 +128,7 @@
           const query = new RegExp(`${v}`, 'gi')
           this.opts = this.options.filter(o => query.test(o))
         })
-      }
-    }
+      },
+    },
   }
 </script>

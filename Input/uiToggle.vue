@@ -23,6 +23,10 @@
       height: var(--input-height);
       border-radius: var(--border-radius);
       overflow: hidden;
+      &:hover,
+      &:focus-within {
+        box-shadow: $state-active-box-shadow;
+      }
     }
     &__input,
     &__label {
@@ -34,7 +38,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: var(--ui-c-light);
+      background: var(--ui-c-light-subtle);
     }
 
     &__checkmark:before {

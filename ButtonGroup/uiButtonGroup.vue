@@ -5,17 +5,19 @@
     --border-radius: var(--ui-border-radius-lg, .25em);
     --background: transparent;
 
-    display: flex;
+    display: inline-flex;
     background: var(--background);
+    overflow: hidden;
+    border-radius: var(--border-radius);
 
     & button:first-child {
-      border-radius: var(--border-radius) 0 0 var(--border-radius);
+      --border-radius: var(--border-radius) 0 0 var(--border-radius);
     }
     & button:last-child {
-      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+      --border-radius: 0 var(--border-radius) var(--border-radius) 0;
     }
     & button:not(:first-child):not(:last-child) {
-      border-radius: 0;
+      --border-radius: 0;
     }
   }
 
@@ -23,18 +25,14 @@
 
 
 <template>
-
   <div class="ui-button-group">
     <slot></slot>
   </div>
-
 </template>
 
 
 <script>
-
-  export default {
-    name: "ui-button-group"
-  }
-
+export default {
+  name: "ui-button-group",
+};
 </script>

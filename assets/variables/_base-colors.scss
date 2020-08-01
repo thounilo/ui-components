@@ -1,0 +1,20 @@
+
+//* Top level
+$base-h: 270;
+$base-s: 40%;
+$base-l: 55%;
+
+$c-primary:             hsl($base-h,        $base-s,       $base-l      );
+$c-primary-subtle:      hsl($base-h,        $base-s,       $base-l - 10 );
+$c-primary-highlight:   hsl($base-h,        $base-s,       $base-l + 10 );
+$c-accent:              hsl($base-h + 180,  $base-s,       $base-l      );
+$c-accent-subtle:       hsl($base-h + 180,  $base-s,       $base-l - 10 );
+$c-accent-highlight:    hsl($base-h + 180,  $base-s,       $base-l + 10 );
+
+$c-dark:                hsl($base-h, 0%, 15%);
+$c-dark-subtle:         hsl($base-h, 0%, 10%);
+$c-dark-highlight:      hsl($base-h, 0%, 20%);
+
+$c-light:               hsl($base-h, 0%, 85%);
+$c-light-subtle:        hsl($base-h, 0%, 80%);
+$c-light-highlight:     hsl($base-h, 0%, 90%);
