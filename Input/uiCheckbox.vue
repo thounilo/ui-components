@@ -3,6 +3,10 @@
 
   .ui-checkbox {
     --scale: 1;
+    --input-size: calc(var(--scale) * 1.25em);
+    --checkmark-size: calc(var(--input-size) * 0.7);
+    --border-radius: var(--ui-border-radius-sm);
+
     display: inline-flex;
     flex-direction: row-reverse;
     align-items: center;
@@ -13,10 +17,10 @@
     }
     &__input {
       position: relative;
-      width: calc(var(--scale) * 1.25em);
-      height: calc(var(--scale) * 1.25em);
+      width: var(--input-size);
+      height: var(--input-size);
       background: var(--ui-c-light-subtle);
-      border-radius: var(--ui-border-radius-sm);
+      border-radius: var(--border-radius);
 
       &:hover,
       &:focus-within {
@@ -34,10 +38,10 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 70%;
-      height: 70%;
+      width: var(--checkmark-size);
+      height: var(--checkmark-size);
       transform: translate(-50%, -50%) scale(0.5);
-      border-radius: var(--ui-border-radius-sm);
+      border-radius: var(--border-radius);
       transition: all 180ms ease-in-out;
     }
     &--is-checked {
