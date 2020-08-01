@@ -56,7 +56,7 @@
         :value="value"
         :id="uuid"
         type="checkbox"
-        v-on:input="handleChange($event)"
+        @input="handleChange($event)"
       />
       <div
         :class="[

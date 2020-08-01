@@ -60,7 +60,7 @@
         type="radio"
         :name="name"
         :checked="isChecked"
-        v-on:input="handleChange"
+        @input="handleChange"
       />
       <div
         :class="[
