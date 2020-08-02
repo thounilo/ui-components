@@ -19,6 +19,7 @@ export { default as uiSelect } from './Input/uiSelect.vue'
 //* Informative elements
 export { default as uiSnackbar } from './Snackbar/uiSnackbar.vue'
 export { default as uiOverlay } from './Overlay/uiOverlay.vue'
+export { default as uiNavbar } from './NavBar/NavBar.vue'
 
 //* Loader elements
 export { default as uiSpinner } from './Loaders/Spinner.vue'

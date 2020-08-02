@@ -5,7 +5,6 @@
     --position: fixed;
     --height: 3em;
     --scale: 1;
-    font-size: calc(var(--scale) * 1em);
     position: var(--position);
     bottom: calc(var(--height) * -1);
     left: 50%;
@@ -18,6 +17,7 @@
     padding: 0 1em;
     background: #222;
     color: var(--ui-c-light);
+    font-size: calc(var(--scale) * 1em);
     border-radius: var(--ui-border-radius-sm);
     transition: transform 300ms ease-in-out;
 
@@ -25,11 +25,11 @@
       position: absolute;
       top: 0.5em;
       right: 0.5em;
-      padding: 0.5em;
-      border-radius: var(--ui-border-radius-circle);
       display: flex;
       align-items: center;
-
+      padding: 0.5em;
+      border-radius: var(--ui-border-radius-circle);
+      transition: background 180ms;
       &:hover {
         background: $state-hover;
         cursor: pointer;
@@ -47,7 +47,7 @@
       {{ content }}
     </div>
     <div class="ui-snackbar__close" @click="hide">
-      <ui-icon size="4" icon="ui-close-outline" />
+      <ui-icon size="4" icon="close" />
     </div>
   </div>
 </template>
@@ -71,6 +71,10 @@
         type: Number,
         default: 4000,
       },
+      persistent: {
+        type: Boolean,
+        default: false,
+      },
     },
     data() {
       return {
@@ -87,15 +91,14 @@
     },
     methods: {
       show(bool) {
-        console.log('please show', bool)
-
         if (!bool) return
 
         if (this.currentTimeout) {
           clearTimeout(this.currentTimeout)
         }
-        this.currentTimeout = setTimeout(this.hide, this.timeout)
-        console.log('this.currentTimeout, bool', this.currentTimeout, bool)
+        if (!this.persistent) {
+          this.currentTimeout = setTimeout(this.hide, this.timeout)
+        }
       },
       hide() {
         this.$emit('update:isActive', false)

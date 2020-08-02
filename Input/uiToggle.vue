@@ -24,6 +24,7 @@
       border-radius: var(--border-radius);
       overflow: hidden;
       transition: box-shadow 180ms;
+      flex: 1 0 auto;
 
       &:hover,
       &:focus-within {

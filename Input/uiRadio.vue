@@ -22,6 +22,7 @@
       background: var(--ui-c-light-subtle);
       border-radius: var(--border-radius);
       transition: box-shadow 180ms;
+      flex: 1 0 auto;
 
       &:hover,
       &:focus-within {

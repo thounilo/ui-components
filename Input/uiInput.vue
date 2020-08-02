@@ -31,7 +31,7 @@
       border: var(--border);
 
       &::placeholder {
-        color: var(--ui-c-theme-font-subtle);
+        color: var(--ui-c-transparent-light-60);
         font-size: calc(var(--scale) * 0.9em);
       }
     }

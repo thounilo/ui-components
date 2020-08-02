@@ -34,6 +34,22 @@
   --ui-c-theme-font-subtle:     var(--ui-c-light-subtle);
   --ui-c-theme-font-highlight:  var(--ui-c-light-highlight);
   --ui-c-theme-background:      var(--ui-c-dark-subtle);
+
+  //* Layout
+  --ui-container-x-spacing: 0em;
+}
+
+@media (min-width: $breakpoint-handheld) {
+  :root {
+    --ui-container-x-spacing: 2em;
+  }
+}
+
+
+@media (min-width: $breakpoint-tablet) {
+  :root {
+    --ui-container-x-spacing: 3em;
+  }
 }
 
 body {
