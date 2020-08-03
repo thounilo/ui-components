@@ -1,7 +1,5 @@
 <style lang="scss">
-
   .ui-icon {
-
     --size: 100%;
     --color: currentColor;
 
@@ -9,9 +7,7 @@
     width: var(--size);
     height: var(--size);
     fill: var(--color);
-
   }
-
 </style>
 
 <template>
@@ -21,33 +17,32 @@
 </template>
 
 <script>
-
   import iconPath from '../assets/Icons/symbols.svg'
 
   export default {
-    name: "ui-icon",
+    name: 'ui-icon',
     props: {
       icon: {
         type: String,
         default: '',
-        required: true
+        required: true,
       },
       size: {
         type: [Number, String],
-        default: null
-      }
+        default: null,
+      },
     },
     computed: {
       computedPath() {
         return `${iconPath}#${this.icon}`
-      }
+      },
     },
     mounted() {
-      if(!!this.size)
+      if (!!this.size)
         this.$refs.element.style.setProperty(
           '--size',
-          `${parseInt(this.size) * .25}em`
+          `${parseInt(this.size) * 0.25}em`
         )
-    }
+    },
   }
 </script>

@@ -99,6 +99,24 @@ $paddings: (
   position: fixed;
 }
 
+//* Flex stuff
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.align-center {
+  align-items: center;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
 //* Display
 .flex {
   display: flex;
