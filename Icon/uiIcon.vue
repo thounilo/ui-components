@@ -1,5 +1,7 @@
 <style lang="scss">
+
   .ui-icon {
+<<<<<<< HEAD
     --icon-size: 100%;
     --icon-color: currentColor;
 
@@ -7,7 +9,19 @@
     width: var(--icon-size);
     height: var(--icon-size);
     fill: var(--icon-color);
+=======
+
+    --size: 100%;
+    --color: currentColor;
+
+    display: inline-block;
+    width: var(--size);
+    height: var(--size);
+    fill: var(--color);
+
+>>>>>>> parent of 2c324c2... helpers as plugin
   }
+
 </style>
 
 <template>
@@ -16,6 +30,7 @@
   </svg>
 </template>
 
+<<<<<<< HEAD
 <script lang="ts">
   import { computed, defineComponent, onMounted, ref } from 'vue'
   //@ts-ignore
@@ -23,14 +38,23 @@
 
   export default defineComponent({
     name: 'ui-icon',
+=======
+<script>
+
+  import iconPath from '../assets/Icons/symbols.svg'
+
+  export default {
+    name: "ui-icon",
+>>>>>>> parent of 2c324c2... helpers as plugin
     props: {
       icon: {
         type: String,
         default: '',
-        required: true,
+        required: true
       },
       size: {
         type: [Number, String],
+<<<<<<< HEAD
         default: 5,
       },
     },
@@ -54,3 +78,22 @@
     mounted() {},
   })
 </script>
+=======
+        default: null
+      }
+    },
+    computed: {
+      computedPath() {
+        return `${iconPath}#${this.icon}`
+      }
+    },
+    mounted() {
+      if(!!this.size)
+        this.$refs.element.style.setProperty(
+          '--size',
+          `${parseInt(this.size) * .25}em`
+        )
+    }
+  }
+</script>
+>>>>>>> parent of 2c324c2... helpers as plugin

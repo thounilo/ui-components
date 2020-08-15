@@ -32,9 +32,6 @@ function globalCSS(id) {
 
   return {
     insert: (s, css) => {
-      //TODO Find way to use Element as parameter s
-      //* s instanceof Element
-
       if (!hasData(s)) {
         console.warn('Invalid selector, got: %s', s)
         return
