@@ -1,21 +1,26 @@
 <style lang="scss">
+  @import '../assets/_variables.scss';
   .ui-floating-bar {
     --position-top: 0;
     --position-bottom: initial;
     --position: fixed;
-
+    --height: 4em;
     position: var(--position);
     top: var(--position-top);
+    left: 0;
     bottom: var(--position-bottom);
     width: 100%;
-    max-height: 4em;
+    max-height: var(--height);
     height: 100%;
-    background: var(--ui-);
+    background: var(--ui-c-primary);
+    z-index: $z-fixed;
   }
 </style>
 
 <template>
-  <div class="ui-floating-bar" ref="floatingBar"></div>
+  <div class="ui-floating-bar" ref="floatingBar">
+    <slot></slot>
+  </div>
 </template>
 
 <script>
@@ -27,7 +32,7 @@
     },
     mounted() {
       if (this.position === 'bottom') {
-        this.$uiComponents.style.insert(this.$refs.floatinBar.$el, {
+        this.$uiComponents.style.insert(this.$refs.floatingBar.$el, {
           '--position-bottom': 0,
           '--position-top': unset,
         })
