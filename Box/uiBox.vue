@@ -1,7 +1,5 @@
 <style lang="scss">
-
   .ui-box {
-
     --display: block;
     --x: flex-start;
     --y: flex-start;
@@ -22,89 +20,82 @@
       flex-wrap: var(--wrap);
     }
   }
-
 </style>
 
 <template>
-  <component
-    :class="[computedClasses]"
-    :is="tag"
-    ref="uiElement"
-  >
+  <component :class="[computedClasses]" :is="tag" ref="uiElement">
     <slot></slot>
   </component>
 </template>
 
 <script>
-
   function setElementStyles(el, styles) {
-    for(let [prop, value] of Object.entries(styles)) {
-      if(typeof value === 'string' && value.length) {
+    for (let [prop, value] of Object.entries(styles)) {
+      if (typeof value === 'string' && value.length) {
         el.style.setProperty(prop, value)
       }
     }
   }
 
   export default {
-    name: "ui-box",
+    name: 'ui-box',
     props: {
       tag: {
         type: String,
-        default: 'div'
+        default: 'div',
       },
 
       //* Layout
       flex: {
         type: Boolean,
-        default: false
+        default: false,
       },
       direction: {
         type: String,
-        default: 'row'
+        default: 'row',
       },
       x: {
         type: String,
-        default: ''
+        default: '',
       },
       y: {
         type: String,
-        default: ''
+        default: '',
       },
       wrap: {
         type: Boolean,
-        default: false
+        default: false,
       },
-
     },
     computed: {
       computedClasses() {
         return {
           'ui-box': true,
-          'ui-box__flex': !!this.flex
+          'ui-box__flex': !!this.flex,
         }
-      }
+      },
     },
     mounted() {
       //? Maybe bad way of doing
-      if(this.wrap) {
+      if (this.wrap) {
         setElementStyles(this.$refs.uiElement, {
-          '--wrap': 'wrap'
+          '--wrap': 'wrap',
         })
       }
-      if(this.flex) {
-        if(this.direction === 'column') {
+      if (this.flex) {
+        if (this.direction === 'column') {
           setElementStyles(this.$refs.uiElement, {
             '--direction': this.direction,
             '--x': this.y,
-            '--y': this.x
+            '--y': this.x,
           })
         } else {
           setElementStyles(this.$refs.uiElement, {
             '--x': this.x,
-            '--y': this.y
+            '--y': this.y,
           })
         }
       }
-    }
+    },
   }
 </script>

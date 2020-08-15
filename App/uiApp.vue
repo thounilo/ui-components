@@ -19,20 +19,41 @@
   </div>
 </template>
 
-<script>
-  export default {
-    name: 'ui-app',
-    mounted() {
-      this.updateViewportHeightUnit()
-      window.addEventListener('resize', this.updateViewportHeightUnit)
+<script lang="ts">
+  // import { theme } from '../assets/theme'
+  import {
+    defineComponent,
+    onMounted,
+    onBeforeUnmount,
+    provide,
+    reactive,
+  } from 'vue'
+
+  export default defineComponent({
+    name: 'uiApp',
+    setup() {
+      // let themeProvider = reactive(theme)
+      // provide('theme', themeProvider)
+
+      const updateViewportHeightUnit = () => {
+        document.documentElement.style.setProperty(
+          '--vh',
+          `${window.innerHeight * 0.01}px`
+        )
+      }
+
+      onMounted(() => {
+        updateViewportHeightUnit()
+        window.addEventListener('resize', updateViewportHeightUnit)
+      })
+
+      onBeforeUnmount(() => {
+        window.removeEventListener('resize', updateViewportHeightUnit)
+      })
+
+      return {
+        updateViewportHeightUnit,
+      }
     },
-    destroyed() {
-      window.removeEventListener('resize', this.updateViewportHeightUnit)
-    },
-    methods: {
-      updateViewportHeightUnit() {
-        document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`)
-      },
-    },
-  }
+  })
 </script>

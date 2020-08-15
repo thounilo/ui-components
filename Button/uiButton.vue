@@ -3,7 +3,7 @@
   @import '../assets/_common.scss';
 
   .ui-button {
-    --width: auto;
+    --button-width: auto;
     --height: auto;
     --color: var(--ui-c-light);
     --background: transparent;
@@ -22,7 +22,7 @@
     justify-content: center;
     user-select: none;
 
-    width: var(--width);
+    width: var(--button-width);
     height: var(--height);
     padding: var(--padding);
     color: var(--color);
@@ -64,9 +64,9 @@
 </style>
 
 <template>
-  <button :class="computedClasses" v-on="$listeners">
+  <button :class="computedClasses" v-bind="$attrs">
     <slot name="icon">
-      <ui-icon class="z-5" v-if="icon" :icon="icon" :size="computedIconSize" />
+      <uiIcon class="z-5" v-if="icon" :icon="icon" :size="computedIconSize" />
     </slot>
     <slot>
       <span class="inline-block uppercase" v-if="text">{{ text }}</span>
@@ -74,10 +74,17 @@
   </button>
 </template>
 
-<script>
-  export default {
+<script lang="ts">
+  import { computed, defineComponent, inject } from 'vue'
+  //@ts-ignore
+  import { theme } from '../assets/theme'
+  console.log('theme', theme)
+  import { uiIcon } from '../index.js'
+  // const foo = getTypes(['scale', 'prop'])
+  // console.log('foo', foo)
+  export default defineComponent({
     name: 'ui-button',
-    components: { uiIcon: () => import('../Icon/uiIcon') },
+    components: { uiIcon },
     props: {
       text: {
         type: String,
@@ -91,7 +98,7 @@
         type: [Number, String],
         default: 5,
       },
-      // iconRight: Boolean,
+      //* Scale
 
       //* Style
       fluid: Boolean,
@@ -99,22 +106,27 @@
       ghost: Boolean,
       fill: Boolean,
     },
-    computed: {
-      computedClasses() {
+    setup(props) {
+      const computedClasses = computed(() => {
         return {
           'ui-button': true,
-          'ui-button--outline': this.outline,
-          'ui-button--ghost': this.ghost,
-          'ui-button--fill': this.fill,
-          'ui-button--square': this.icon && !this.text,
-          'ui-button--fluid': this.fluid,
+          'ui-button--outline': props.outline,
+          'ui-button--ghost': props.ghost,
+          'ui-button--fill': props.fill,
+          'ui-button--square': props.icon && !props.text,
+          'ui-button--fluid': props.fluid,
         }
-      },
-      computedIconSize() {
-        return typeof this.iconSize === 'string'
-          ? parseInt(this.iconSize)
-          : this.iconSize
-      },
+      })
+
+      const computedIconSize = computed(() => {
+        return typeof props.iconSize === 'string'
+          ? parseInt(props.iconSize)
+          : props.iconSize
+      })
+      return {
+        computedClasses,
+        computedIconSize,
+      }
     },
-  }
+  })
 </script>
