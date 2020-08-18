@@ -2,10 +2,10 @@
   @import '../assets/_variables.scss';
 
   .ui-checkbox {
-    --scale: 1;
-    --input-size: calc(var(--scale) * 1.25em);
-    --checkmark-size: calc(var(--input-size) * 0.7);
-    --border-radius: var(--ui-border-radius-sm);
+    --checkmark-scale: 1;
+    --checkmark-input-size: calc(var(--checkmark-scale) * 1.25em);
+    --checkmark-size: calc(var(--checkmark-input-size) * 0.7);
+    --checkmark-border-radius: var(--ui-border-radius-small);
 
     display: inline-flex;
     flex-direction: row-reverse;
@@ -13,14 +13,14 @@
 
     &__label {
       margin-left: 0.5em;
-      font-size: calc(var(--scale) * 1em);
+      font-size: calc(var(--checkmark-scale) * 1em);
     }
     &__input {
       position: relative;
-      width: var(--input-size);
-      height: var(--input-size);
+      width: var(--checkmark-input-size);
+      height: var(--checkmark-input-size);
       background: var(--ui-c-light-subtle);
-      border-radius: var(--border-radius);
+      border-radius: var(--checkmark-border-radius);
       transition: box-shadow 180ms;
       flex: 1 0 auto;
 
@@ -43,7 +43,7 @@
       width: var(--checkmark-size);
       height: var(--checkmark-size);
       transform: translate(-50%, -50%) scale(0.5);
-      border-radius: var(--border-radius);
+      border-radius: var(--checkmark-border-radius);
       transition: all 180ms ease-in-out;
     }
     &--is-checked {
@@ -59,10 +59,10 @@
     <label class="ui-checkbox__input" :for="uuid">
       <input
         class="hide-input"
-        :value="value"
+        :value="isChecked"
         :id="uuid"
         type="checkbox"
-        @input="handleChange($event)"
+        @click="handleChange"
       />
       <div
         :class="[
@@ -74,32 +74,38 @@
   </div>
 </template>
 
-<script>
-  import { minihash } from '../assets/utils'
+<script lang="ts">
+  import { minihash } from '../assets/utils.js'
+  import { defineComponent, computed } from 'vue'
+  import styleProps from '../assets/styleProps'
 
-  export default {
-    name: 'ui-checkbox',
-    inheritAttrs: false,
-    data() {
+  export default defineComponent({
+    name: 'uiCheckbox',
+    props: {
+      modelValue: Boolean,
+      label: String,
+      styleProps: {
+        type: Object,
+        default: () => {
+          return {}
+        },
+      },
+    },
+    setup(props, { emit }) {
+      let uuid = computed(() => minihash(8, 'lu'))
+
+      let isChecked = computed({
+        get: () => props.modelValue,
+        set: value => emit('update:modelValue', value),
+      })
+      const handleChange = () => (isChecked.value = !isChecked.value)
+      const _styleProps = styleProps(props.styleProps, 'checkmark')
+
       return {
-        isChecked: null,
+        uuid,
+        isChecked,
+        handleChange,
       }
     },
-    props: {
-      value: Boolean,
-      label: String,
-      checked: Boolean,
-    },
-    computed: {
-      uuid() {
-        return minihash(8, 'lu')
-      },
-    },
-    methods: {
-      handleChange({ target }) {
-        this.isChecked = target.checked
-        this.$emit('input', target.checked)
-      },
-    },
-  }
+  })
 </script>

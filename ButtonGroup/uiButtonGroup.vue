@@ -1,6 +1,6 @@
 <style lang="scss">
   .ui-button-group {
-    --border-radius: var(--ui-border-radius-lg, 0.25em);
+    --border-radius: var(--ui-border-radius-large, 0.25em);
     --background: transparent;
 
     display: inline-flex;

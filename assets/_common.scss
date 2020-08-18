@@ -1,5 +1,4 @@
 @import '_variables.scss';
-@import '_keyframes.scss';
 
 //* Buttons, Button-like icons, input elements.
 /*
@@ -18,7 +17,7 @@
   overflow: hidden;
 
   --z: 1;
-  @debug ($active != null);
+
   //* Visible interaction are shown in this element
   &::before {
     content: '';
@@ -35,7 +34,6 @@
   //* End for base props
 
   //* Hover
-
   @if $hover != null {
     &:hover::before {
       background: $state-hover;
@@ -43,7 +41,6 @@
   }
 
   //* Focus
-
   @if $focus != null {
     &:focus::before {
       background-color: var(--ui-c-transparent-dark-10);
@@ -54,7 +51,6 @@
   }
 
   //* Active
-
   @if $active != null {
     &:active::before {
       background: $state-active;
@@ -96,8 +92,12 @@
   &::-webkit-scrollbar-thumb:horizontal {
     min-width: 10px;
   }
-
-  overflow: hidden;
+  @supports (scrollbar-width: thin) {
+    & {
+      scrollbar-color: var(--ui-c-dark-highlight) var(--ui-c-dark-subtle);
+      scrollbar-width: thin;
+    }
+  }
 
   @if $direction==x {
     overflow-x: scroll;
@@ -107,31 +107,3 @@
     overflow-y: scroll;
   }
 }
-
-// %scales-common {
-//   //? Adds new css-prop
-//   //  --scale
-
-//   --scale: 1;
-//   font-size: calc(var(--scale) * 1em);
-
-//   &--tiny {
-//     --scale: var(--ui-scale-tiny);
-//   }
-
-//   &--small {
-//     --scale: var(--ui-scale-small);
-//   }
-
-//   &--medium {
-//     --scale: var(--ui-scale-medium);
-//   }
-
-//   &--large {
-//     --scale: var(--ui-scale-large);
-//   }
-
-//   &--giant {
-//     --scale: var(--ui-scale-giant);
-//   }
-// }

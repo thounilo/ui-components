@@ -11,15 +11,15 @@
 </style>
 
 <template>
-  <svg class="ui-icon" ref="icon" v-bind="$attrs">
+  <svg class="ui-icon" :style="_styleProps" v-bind="$attrs">
     <use :xlink:href="computedPath" />
   </svg>
 </template>
 
 <script lang="ts">
   import { computed, defineComponent, onMounted, ref } from 'vue'
-  //@ts-ignore
   import iconPath from '../assets/Icons/symbols.svg'
+  import styleProps from '../assets/styleProps'
 
   export default defineComponent({
     name: 'ui-icon',
@@ -30,27 +30,30 @@
         required: true,
       },
       size: {
-        type: [Number, String],
+        type: Number,
         default: 5,
+      },
+      styleProps: {
+        type: Object,
+        default: () => {
+          return {}
+        },
       },
     },
     setup(props) {
-      const icon = ref(null)
+      const icon = ref()
 
-      const computedPath = computed(() => {
-        return `${iconPath}#${props.icon}`
-      })
+      const computedPath = computed(() => `${iconPath}#${props.icon}`)
+      const _styleProps = styleProps(props.styleProps, 'icon')
       onMounted(() => {
-        let size =
-          typeof props.size === 'string' ? parseInt(props.size) : props.size
-        console.log('icon', icon)
-        icon.value.style.setProperty('--icon-size', `${size * 0.25}em`)
+        icon.value.style.setProperty('--icon-size', `${props.size * 0.25}em`)
       })
+
       return {
         icon,
         computedPath,
+        _styleProps,
       }
     },
-    mounted() {},
   })
 </script>

@@ -2,30 +2,30 @@
   @import '../assets/_common.scss';
 
   .ui-select {
-    --scale: 1;
-    --height: 8em;
+    --select-scale: 1;
+    --select-height: 8em;
     --width: 20em;
-    --input-scale: var(--scale);
+    --input-scale: var(--select-scale);
     --input-width: var(--width);
 
     max-width: var(--width);
     width: 100%;
-    border-radius: var(--ui-border-radius-sm);
+    border-radius: var(--ui-border-radius-small);
     overflow: hidden;
 
     &__input {
       --border-radius: 0;
-      --scale: var(--input-scale);
+      --select-scale: var(--input-scale);
       --width: var(--input-width);
-      font-size: calc(var(--scale) * 1em);
+      font-size: calc(var(--select-scale) * 1em);
     }
 
     &__options {
       height: 100%;
       padding: 0.5em 0;
       background: var(--ui-c-dark);
-      min-height: var(--height);
-      max-height: var(--height);
+      min-height: var(--select-height);
+      max-height: var(--select-height);
       background: var(--ui-c-transparent-dark-10);
       @include scrollbar();
     }
@@ -33,7 +33,7 @@
     &__option {
       @include interactable($hover: true);
       padding: 0.5em 0.75em;
-      font-size: calc(var(--scale) * 0.9em);
+      font-size: calc(var(--select-scale) * 0.9em);
     }
 
     &--fluid {
@@ -57,32 +57,33 @@
     <div class="ui-select__options">
       <div
         class="ui-select__option"
-        @click="onClick(option)"
-        v-for="option in opts"
-        :key="option"
+        v-for="opt in selectOptions"
+        @click="onOptionClick(opt)"
+        :key="opt"
       >
-        {{ option }}
+        {{ opt }}
       </div>
     </div>
   </div>
 </template>
 
-<script>
-  import { minihash } from '../assets/utils'
-  import { uiInput } from '../index'
+<script lang="ts">
+  import uiInput from './uiInput.vue'
 
-  export default {
+  import { minihash } from '../assets/utils.js'
+  import { defineComponent, ref, watch, computed, reactive } from 'vue'
+
+  export default defineComponent({
     name: 'ui-select',
+    emits: ['onSelect'],
     props: {
       label: {
         type: String,
         default: '',
       },
-      size: Number,
-      options: Array,
-      behavior: {
-        type: String,
-        default: 'event', // input
+      options: {
+        type: Array as () => string[],
+        default: [],
       },
       placeholder: String,
       fluid: Boolean,
@@ -90,45 +91,62 @@
     components: {
       uiInput,
     },
-    computed: {
-      uuid() {
-        return minihash(8, 'lu')
-      },
-    },
-    data() {
+    setup(props, { emit }) {
+      const uuid = minihash(8, 'lu')
+
+      let inputValue = ref('')
+      let selectOptionsValue = ref(props.options)
+      let selectOptions = computed({
+        get: () => selectOptionsValue.value,
+        set: value => (selectOptionsValue.value = value),
+      })
+
+      const onOptionClick = (opt: string) => {
+        emit('onSelect', opt)
+        selectOptions.value = props.options
+        inputValue.value = ''
+      }
+
+      watch(
+        () => inputValue.value,
+        (value: string) => {
+          const query = new RegExp(`${value}`, 'gi')
+          selectOptions.value = props.options.filter(o => query.test(o))
+        }
+      )
+
       return {
-        inputValue: '',
-        opts: [],
-        visibleOpts: [],
+        uuid,
+        inputValue,
+        selectOptions,
+        onOptionClick,
       }
     },
-    methods: {
-      onClick(e) {
-        if (this.behavior === 'event') {
-          this.inputValue = ''
-        }
+    // data() {
+    //   return {
+    //     inputValue: '',
+    //     opts: [],
+    //   }
+    // },
+    // methods: {
+    //   onClick(e) {
+    //     this.$nextTick(() => {
+    //       this.opts = this.options
+    //     })
 
-        if (this.behavior === 'input') {
-          this.inputValue = e
-        }
-
-        this.$nextTick(() => {
-          this.opts = this.options
-        })
-
-        this.$emit('onSelect', e)
-      },
-    },
-    mounted() {
-      this.opts = this.options
-    },
-    watch: {
-      inputValue(v) {
-        this.$nextTick(() => {
-          const query = new RegExp(`${v}`, 'gi')
-          this.opts = this.options.filter(o => query.test(o))
-        })
-      },
-    },
-  }
+    //     this.$emit('onSelect', e)
+    //   },
+    // },
+    // mounted() {
+    //   this.opts = this.options
+    // },
+    // watch: {
+    //   inputValue(v) {
+    //     this.$nextTick(() => {
+    //       const query = new RegExp(`${v}`, 'gi')
+    //       this.opts = this.options.filter(o => query.test(o))
+    //     })
+    //   },
+    // },
+  })
 </script>

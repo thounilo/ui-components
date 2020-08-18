@@ -28,20 +28,19 @@ export const theme = {
     giant: {
       value: 1.5,
       class: '--ui-scale-giant',
-      prop: Boolean,
+      prop: {
+        type: Boolean,
+        default: false,
+      },
     },
   },
 }
 
-export const getTypes = (query: Array<string>) => {
-  if (query.length === 2) {
-    const type: string = query[0]
-    const prop: string = query[1]
-    return Object.entries(theme[type][prop])
-    // return {}
-  } else {
-    console.log('need 2 arguments ex. ["scale", "prop"]')
-  }
+export const values = {
+  scaleBase: 1,
+  scaleTiny: 0.75,
+  scaleSmall: 0.9,
+  scaleMedium: 1.15,
+  scaleLarge: 1.3,
+  scaleGiant: 1.5,
 }
-
-export default getTypes

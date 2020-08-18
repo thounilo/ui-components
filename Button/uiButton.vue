@@ -3,18 +3,8 @@
   @import '../assets/_common.scss';
 
   .ui-button {
-    --button-width: auto;
-    --height: auto;
-    --color: var(--ui-c-light);
-    --background: transparent;
-
-    --border: none;
-    --border-radius: var(--ui-border-radius-sm);
-
-    --padding: 0.25em 0.75em;
-
-    --scale: 1;
-    --gap: 0.35em;
+    --button-scale: 1;
+    --button-gap: 0.35em;
 
     position: relative;
     display: flex;
@@ -22,49 +12,63 @@
     justify-content: center;
     user-select: none;
 
-    width: var(--button-width);
-    height: var(--height);
-    padding: var(--padding);
-    color: var(--color);
-    background: var(--background);
-    border: var(--border);
-    border-radius: var(--border-radius);
+    width: var(--button-width, min-content);
+    height: var(--button-height, min-content);
+    padding: var(--button-padding, 0.25em 0.5em);
+    color: var(--button-color, var(--ui-c-light, #333));
+    background: var(--button-background, transparent);
+    border: var(--button-border, none);
+    border-radius: var(
+      --button-border-radius,
+      var(--ui-border-radius-small, 0)
+    );
     font-family: var(--ui-font);
-    font-size: calc(var(--scale) * 1em);
-    overflow: hidden;
+    font-size: calc(var(--button-scale) * 1em);
+    gap: var(--button-gap, 0);
 
-    @include interactable($hover: true, $focus: true, $active: true);
+    @include interactable($hover: true, $focus: true, $active: false);
 
-    & > *:nth-child(2) {
-      margin-left: var(--gap);
-      margin-right: var(--gap);
+    // box-shadow: 0.11em 0.11em 0em 0em hsla(0, 0%, 0%, 0.3);
+    // transition: all 300ms;
+
+    // &:hover {
+    //   transform: translate(0.1em, 0.1em);
+    //   box-shadow: 0.01em 0.01em 0em 0em hsla(0, 0%, 0%, 0.3);
+    // }
+    @supports not (gap: 1em) {
+      & > *:nth-child(2) {
+        margin-left: var(--button-gap);
+        margin-right: var(--button-gap);
+      }
     }
   }
 
   .ui-button {
     &--outline,
     &--ghost {
-      --color: var(--ui-c-primary);
-      --background: transparent;
+      --button-color: var(--ui-c-primary);
+      --button-background: transparent;
     }
     &--fill {
-      --background: var(--ui-c-primary);
-      --color: var(--ui-c-light);
+      --button-background: var(--ui-c-primary);
+      --button-color: var(--ui-c-light);
     }
     &--outline {
-      --border: #{$base-border-width} solid var(--ui-c-primary);
+      --button-border: #{$base-border-width} solid var(--ui-c-primary);
     }
     &--square {
-      --padding: 0.25em;
-    }
-    &--fluid {
-      --width: 100%;
+      --button-padding: 0.25em;
     }
   }
 </style>
 
 <template>
-  <button :class="computedClasses" v-bind="$attrs">
+  <button
+    :class="computedClasses"
+    v-bind="$attrs"
+    ref="buttonRef"
+    :style="_styleProps"
+  >
     <slot name="icon">
       <uiIcon class="z-5" v-if="icon" :icon="icon" :size="computedIconSize" />
     </slot>
@@ -75,15 +79,12 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, inject } from 'vue'
-  //@ts-ignore
-  import { theme } from '../assets/theme'
-  console.log('theme', theme)
-  import { uiIcon } from '../index.js'
-  // const foo = getTypes(['scale', 'prop'])
-  // console.log('foo', foo)
+  import { defineComponent, computed, onMounted, ref } from 'vue'
+  import { uiIcon } from '../index'
+  import { styleProps } from '../assets/styleProps'
+
   export default defineComponent({
-    name: 'ui-button',
+    name: 'uiButton',
     components: { uiIcon },
     props: {
       text: {
@@ -99,22 +100,26 @@
         default: 5,
       },
       //* Scale
-
+      scale: {
+        type: [Number, String],
+      },
       //* Style
       fluid: Boolean,
       outline: Boolean,
       ghost: Boolean,
       fill: Boolean,
+      styleProps: {
+        type: Object,
+      },
     },
     setup(props) {
-      const computedClasses = computed(() => {
+      const computedClasses = computed((): any => {
         return {
           'ui-button': true,
           'ui-button--outline': props.outline,
           'ui-button--ghost': props.ghost,
           'ui-button--fill': props.fill,
-          'ui-button--square': props.icon && !props.text,
-          'ui-button--fluid': props.fluid,
+          'w-full': props.fluid,
         }
       })
 
@@ -123,9 +128,21 @@
           ? parseInt(props.iconSize)
           : props.iconSize
       })
+
+      //? is reactive
+      const _styleProps = computed(() => {
+        let p = Object.assign(
+          {},
+          props.styleProps ? props.styleProps : {},
+          props.scale ? { scale: props.scale } : {}
+        )
+        return styleProps(p, 'button')
+      })
+
       return {
         computedClasses,
         computedIconSize,
+        _styleProps,
       }
     },
   })

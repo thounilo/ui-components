@@ -61,29 +61,31 @@
     <label class="ui-radio__input" :for="uuid">
       <input
         class="hide-input"
-        :value="label"
-        :id="uuid"
         type="radio"
+        :id="uuid"
+        :value="label"
         :name="name"
-        :checked="isChecked"
+        :checked="isChecked === label"
         @input="handleChange"
       />
       <div
         :class="[
           'ui-radio__checkmark',
-          isChecked ? 'ui-radio--is-checked' : '',
+          isChecked === label ? 'ui-radio--is-checked' : '',
         ]"
       ></div>
     </label>
   </div>
 </template>
 
-<script>
-  import { minihash } from '../assets/utils'
+<script lang="ts">
+  import { minihash } from '../assets/utils.js'
+  import { computed, defineComponent } from 'vue'
 
-  export default {
-    name: 'ui-radio',
+  export default defineComponent({
+    name: 'uiRadio',
     props: {
+      modelValue: String,
       label: {
         type: String,
         required: true,
@@ -91,25 +93,43 @@
       value: String,
       name: String,
     },
-    data() {
+    setup(props, { emit }) {
+      let uuid = computed(() => minihash(8, 'lu'))
+
+      let isChecked = computed({
+        get: () => props.modelValue,
+        set: value => emit('update:modelValue', value),
+      })
+
+      const handleChange = () => {
+        isChecked.value = props.label
+      }
+
       return {
-        isChecked: this.value,
+        uuid,
+        isChecked,
+        handleChange,
       }
     },
-    computed: {
-      uuid() {
-        return minihash(8, 'lu')
-      },
-    },
-    methods: {
-      handleChange() {
-        this.$emit('input', this.label)
-      },
-    },
-    watch: {
-      value(val) {
-        this.isChecked = this.value === this.label
-      },
-    },
-  }
+    // data() {
+    //   return {
+    //     isChecked: this.value,
+    //   }
+    // },
+    // computed: {
+    //   uuid() {
+    //     return minihash(8, 'lu')
+    //   },
+    // },
+    // methods: {
+    //   handleChange() {
+    //     this.$emit('input', this.label)
+    //   },
+    // },
+    // watch: {
+    //   value(val) {
+    //     this.isChecked = this.value === this.label
+    //   },
+    // },
+  })
 </script>

@@ -2,79 +2,46 @@
   @import '../assets/_variables.scss';
 
   .ui-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 10;
-    --width: 18em;
+    --overlay-position: fixed;
+    --overlay-position-top: 0;
+    --overlay-position-left: 0;
+    --overlay-position-bottom: initial;
+    --overlay-position-right: initial;
 
-    &__backdrop {
-      background: hsla(0, 0%, 0%, 0.4);
-      z-index: 11;
-    }
-    &__header {
-      min-height: 2em;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      padding: 1em;
-
-      h2 {
-        display: inline-block;
-      }
-    }
-    &__close {
-      margin-left: auto;
-      border-radius: var(--ui-border-radius-circle);
-      display: flex;
-      align-items: center;
-      padding: 0.25em;
-
-      &:hover {
-        background: $state-hover;
-        cursor: pointer;
-      }
-    }
-    &__content {
-      z-index: 12;
-      background: #111;
-      min-width: var(--width);
-      border-radius: var(--ui-border-radius-sm);
-
-      & section {
-        padding: 0 1em 1em 1em;
-      }
-    }
+    position: var(--overlay-position);
+    top: var(--overlay-position-top);
+    left: var(--overlay-position-left);
+    bottom: var(--overlay-position-bottom);
+    right: var(--overlay-position-right);
+    width: 100%;
+    height: 100%;
   }
+
+  //? maybe some classes for background fade and similar transition effects
 </style>
 
 <template>
-  <div class="ui-overlay wh-screen" v-show="isActive">
-    <div class="ui-overlay__backdrop wh-full" ref="backdrop" @click="handleBackdropClick"></div>
-    <div class="ui-overlay__content absolute-center">
-      <header class="ui-overlay__header">
-        <h3 v-if="title">{{ title }}</h3>
-        <div class="ui-overlay__close">
-          <uiIcon icon="ui-close-outline" @click="updateModel(false)" size="5" />
-        </div>
-      </header>
-      <section>
-        <slot> </slot>
-      </section>
-    </div>
+  <div class="ui-overlay" v-show="isActive" :style="_styleProps">
+    <slot
+      v-bind="{
+        isActive,
+        disable: disableOverlay,
+        activate: activateOverlay,
+      }"
+    ></slot>
   </div>
 </template>
 
-<script>
-  import { uiIcon } from '../index'
+/** * Simple overlay * */
 
-  export default {
+<script lang="ts">
+  import { defineComponent, computed, onMounted, onBeforeUnmount } from 'vue'
+  import styleProps from '../assets/styleProps'
+
+  export default defineComponent({
     name: 'ui-overlay',
-    components: { uiIcon },
     props: {
-      isActive: {
+      modelValue: {
         type: Boolean,
         default: false,
       },
@@ -82,31 +49,55 @@
         type: Boolean,
         default: true,
       },
-      closeOnBackdrop: {
-        type: Boolean,
-        default: true,
+      delay: {
+        type: Number,
+        default: 0,
       },
-      title: {
-        type: String,
-        default: '',
-      },
-    },
-    methods: {
-      closeOnEscListener(e) {
-        if (e.key === 'Escape' || e.key === 'Esc') this.updateModel(false)
-      },
-      handleBackdropClick() {
-        if (this.closeOnBackdrop) this.updateModel(false)
-      },
-      updateModel(bool) {
-        this.$emit('update:isActive', bool)
+      styleProps: {
+        type: Object,
+        default: () => {
+          return {}
+        },
       },
     },
-    mounted() {
-      if (this.closeOnEsc) window.addEventListener('keyup', this.closeOnEscListener)
+    setup(props, { emit }) {
+      let isActive = computed({
+        get: () => props.modelValue,
+        set: value => emit('update:modelValue', value),
+      })
+      const _styleProps = styleProps(props.styleProps, 'overlay')
+      const activateOverlay = () => (isActive.value = true)
+      const disableOverlay = () => {
+        if (props.delay) {
+          setTimeout(() => {
+            isActive.value = false
+          }, props.delay)
+        } else {
+          isActive.value = false
+        }
+      }
+
+      const escListener = (e: KeyboardEvent) => {
+        if (e.key === 'Escape' || e.key === 'Esc') {
+          disableOverlay()
+        }
+      }
+      onMounted(() => {
+        if (props.closeOnEsc) {
+          window.addEventListener('keyup', escListener)
+        }
+      })
+      onBeforeUnmount(() => {
+        if (props.closeOnEsc) {
+          window.removeEventListener('keyup', escListener)
+        }
+      })
+      return {
+        isActive,
+        activateOverlay,
+        disableOverlay,
+        _styleProps,
+      }
     },
-    beforeDestroy() {
-      if (this.closeOnEsc) window.removeEventListener('keyup', this.closeOnEscListener)
-    },
-  }
+  })
 </script>

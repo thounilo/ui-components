@@ -9,7 +9,7 @@
     --background: transparent;
 
     --border: none;
-    --border-radius: var(--ui-border-radius-sm);
+    --border-radius: var(--ui-border-radius-small);
 
     --padding: 0.25em 0.75em;
 

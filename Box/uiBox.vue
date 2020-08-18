@@ -3,8 +3,8 @@
     --display: block;
     --x: flex-start;
     --y: flex-start;
-    --direction: 'row';
-    --wrap: nowrap;
+    --direction: row;
+    --wrap: wrap;
     --width: initial;
     --height: initial;
 

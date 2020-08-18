@@ -7,7 +7,7 @@
   .ui-input {
     --height: auto;
     --width: 20em;
-    --border-radius: var(--ui-border-radius-sm);
+    --border-radius: var(--ui-border-radius-small);
     --border: none;
     --background: var(--ui-c-transparent-light-5);
     --color: var(--ui-c-light);
@@ -96,7 +96,7 @@
       <input
         class="ui-input__element"
         :id="computedID"
-        :value="value"
+        :value="inputValue"
         :type="type"
         :placeholder="placeholder"
         :validate="validate"
@@ -104,8 +104,8 @@
         :required="required"
         :disabled="disabled"
         :spellcheck="spellcheck"
+        @input="onInput"
         ref="uiElement"
-        v-on:input="$emit('input', $event.target.value)"
       />
 
       <slot name="input-icon">
@@ -123,23 +123,26 @@
   </div>
 </template>
 
-<script>
-  import { minihash } from '../assets/utils.js'
+<script lang="ts">
+  import { minihash } from '../assets/utils'
+  import { defineComponent, computed, ref } from 'vue'
+  import { uiIcon } from '../index'
 
-  export default {
-    name: 'ui-input',
-    components: { uiIcon: () => import('../Icon/uiIcon.vue') },
+  export default defineComponent({
+    name: 'uiInput',
+    components: { uiIcon },
     props: {
+      modelValue: {
+        type: String,
+        default: '',
+      },
       type: {
         type: String,
         default: 'text',
-        validator: type =>
-          ['text', 'password', 'email', 'url', 'tel', 'search'].some(
-            t => t === type
-          ),
       },
       for: {
         type: String,
+        default: '',
       },
       //* Layout
       label: {
@@ -151,70 +154,110 @@
         default: '',
       },
 
-      icon: String,
+      //* Icon
+      icon: {
+        type: String,
+        default: '',
+      },
       iconSize: {
         type: [Number, String],
         default: 5,
       },
 
-      // TODO
       //* Theme
-      light: Boolean,
-      outline: Boolean,
-      fluid: Boolean,
-      fill: Boolean,
+      light: {
+        type: Boolean,
+        default: false,
+      },
+      outline: {
+        type: Boolean,
+        default: false,
+      },
+      fluid: {
+        type: Boolean,
+        default: false,
+      },
+      fill: {
+        type: Boolean,
+        default: false,
+      },
 
       //* Attrs
       placeholder: {
         type: String,
         default: '',
       },
-      validate: Boolean,
-      autofocus: Boolean,
-      required: Boolean,
-      disabled: Boolean,
+      validate: {
+        type: Boolean,
+        default: false,
+      },
+      autofocus: {
+        type: Boolean,
+        default: false,
+      },
+      required: {
+        type: Boolean,
+        default: false,
+      },
+      disabled: {
+        type: Boolean,
+        default: false,
+      },
       spellcheck: {
         type: Boolean,
         default: false,
       },
-      id: String,
-
-      //* State
-      value: {
+      id: {
         type: String,
         default: '',
       },
-      // TODO
+
+      //* State
       state: {
         type: Boolean,
         default: null,
       },
     },
-    computed: {
-      computedClasses() {
+    // TODO styleProps
+    setup(props, { emit }) {
+      const computedClasses = computed(() => {
         return {
           'ui-input': true,
-          'ui-input__light': !!this.light,
-          'ui-input--with-icon': !!this.icon,
-          'ui-input--outline': !!this.outline,
-          'ui-input--fill': this.fill,
-          'w-full': !!this.fluid,
+          'ui-input__light': !!props.light,
+          'ui-input--with-icon': !!props.icon,
+          'ui-input--outline': !!props.outline,
+          'ui-input--fill': props.fill,
+          'w-full': !!props.fluid,
         }
-      },
-      uuid() {
-        return this.id ? this.id : minihash(8, 'lu')
-      },
-      hasIcon() {
-        return !!this.icon
-      },
-      computedID() {
-        return this.for ? this.for : this.uuid
-      },
+      })
+
+      let inputValue = computed({
+        get: () => props.modelValue,
+        set: value => emit('update:modelValue', value),
+      })
+
+      const onInput = (e: InputEvent) => {
+        inputValue.value = (<HTMLInputElement>e.target).value
+      }
+
+      const uuid = computed(() => (props.id ? props.id : minihash(8, 'lu')))
+
+      const hasIcon = ref(!!props.icon)
+      const computedID = computed(() => {
+        return props.for ? props.for : uuid
+      })
+
+      const handleIconClick = (e: MouseEvent) => emit('click:icon', e)
+
+      return {
+        computedClasses,
+        uuid,
+        hasIcon,
+        computedID,
+        handleIconClick,
+        onInput,
+        inputValue,
+      }
     },
-    methods: {
-      handleIconClick(e) {
-        this.$emit('click:icon', e)
-      },
-    },
-  }
+  })
 </script>

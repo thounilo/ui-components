@@ -1,7 +1,6 @@
-@import '_helpers';
+@import 'variables/base-colors';
 
 //* Base
-
 $base-border-width: 2px;
 
 //* State
@@ -13,10 +12,12 @@ $state-active-box-shadow: 0 0 0 $state-active-border-width $state-active-border;
 $state-disabled: #ccc;
 $state-disable-color: #333;
 
+//* Breakpoints
 $breakpoint-handheld: 20em;
 $breakpoint-tablet: 48em;
 $breakpoint-laptop: 64em;
 $breakpoint-screen: 120em;
 
+//* Z-index
 $z-overlay: 100;
 $z-fixed: 1000;

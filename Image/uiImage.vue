@@ -2,88 +2,101 @@
   @import '../assets/_variables.scss';
 
   .ui-image {
-    --width: 100%;
-    --height: auto;
-    --object-fit: contain;
-    --border-radius: 0;
+    --image-width: 100%;
+    --image-height: auto;
+    --image-object-fit: contain;
+    --image-border-radius: 0;
 
-    width: var(--width);
-    height: var(--height);
-    object-fit: var(--object-fit);
-    border-radius: var(--border-radius);
+    width: var(--image-width);
+    height: var(--image-height);
+    object-fit: var(--image-object-fit);
+    border-radius: var(--image-border-radius);
 
     &--portrait {
-      --width: auto;
-      --height: 100%;
+      --image-width: auto;
+      --image-height: 100%;
     }
 
     &--rounded {
-      --border-radius: var(--ui-border-radius-sm);
+      --image-border-radius: var(--ui-border-radius-small);
     }
     &--circle {
-      --border-radius: var(--ui-border-radius-circle);
+      --image-border-radius: var(--ui-border-radius-circle);
     }
   }
 </style>
 
 <template>
-  <img :class="computedClasses" :src="src" :alt="alt" ref="image" />
+  <img
+    :class="computedClasses"
+    ref="image"
+    v-bind="$attrs"
+    :style="_styleProps"
+  />
 </template>
 
-<script>
-  export default {
-    name: 'ui-imge',
+<script lang="ts">
+  import { defineComponent, computed, ref, onMounted, reactive } from 'vue'
+  import { styleProps } from '../assets/styleProps'
+
+  export default defineComponent({
+    name: 'uiImage',
     props: {
-      src: {
-        type: String,
-        default: '',
-        required: true,
-      },
-      alt: {
-        type: String,
-        default: '',
-      },
       cover: Boolean,
       rounded: Boolean,
       circle: Boolean,
-      width: String,
-      height: String,
+      orientation: String,
+      styleProps: {
+        type: Object,
+        default: () => {
+          return {}
+        },
+      },
     },
-    computed: {
-      computedClasses() {
+    setup(props) {
+      const computedClasses = computed(() => {
         return {
           'ui-image': true,
-          'ui-image--portrait': this.orientation === 'portrait',
-          'ui-image--circle': this.circle,
-          'ui-image--rounded': this.rounded,
+          'ui-image--portrait': orientation.value === 'portrait',
+          'ui-image--circle': props.circle,
+          'ui-image--rounded': props.rounded,
         }
-      },
-    },
-    data() {
+      })
+      const imageRef: any = ref()
+      let orientation = ref('landscape')
+
+      const getImageOrientation = () => {
+        if (imageRef.naturalWidth > imageRef.naturalWidth) {
+          return 'landscape'
+        } else {
+          return 'portrait'
+        }
+      }
+
+      const _styleProps = styleProps(props.styleProps, 'image')
+      onMounted(() => {
+        orientation.value = getImageOrientation()
+      })
+
       return {
-        orientation: 'landscape',
+        computedClasses,
+        _styleProps,
       }
     },
-    methods: {
-      imageOrientation() {
-        const img = this.$refs.image
-        if (img.naturalWidth < img.naturalHeight) return 'portrait'
-        return this.orientation
-      },
-    },
-    mounted() {
-      if (this.cover) {
-        this.$refs.image.style.setProperty('--object-fit', 'cover')
-        this.$refs.image.style.setProperty('--width', '100%')
-        this.$refs.image.style.setProperty('--height', '100%')
-      }
-      if (this.width) {
-        this.$refs.image.style.setProperty('--width', this.width)
-      }
-      if (this.height) {
-        this.$refs.image.style.setProperty('--height', this.height)
-      }
-      this.orientation = this.imageOrientation()
-    },
-  }
+
+    // mounted() {
+    //   if (this.cover) {
+    //     this.$refs.image.style.setProperty('--object-fit', 'cover')
+    //     this.$refs.image.style.setProperty('--image-width', '100%')
+    //     this.$refs.image.style.setProperty('--image-height', '100%')
+    //   }
+    //   if (this.width) {
+    //     this.$refs.image.style.setProperty('--image-width', this.width)
+    //   }
+    //   if (this.height) {
+    //     this.$refs.image.style.setProperty('--image-height', this.height)
+    //   }
+    //   this.orientation = this.imageOrientation()
+    // },
+  })
 </script>

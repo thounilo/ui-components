@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-  // import { theme } from '../assets/theme'
+  import { theme } from '../assets/theme'
   import {
     defineComponent,
     onMounted,
@@ -32,8 +32,8 @@
   export default defineComponent({
     name: 'uiApp',
     setup() {
-      // let themeProvider = reactive(theme)
-      // provide('theme', themeProvider)
+      let themeProvider = reactive(theme)
+      provide('theme', themeProvider)
 
       const updateViewportHeightUnit = () => {
         document.documentElement.style.setProperty(

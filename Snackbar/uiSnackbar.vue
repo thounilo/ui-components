@@ -4,7 +4,7 @@
   .ui-snackbar {
     --position: fixed;
     --height: 3em;
-    --scale: 1;
+    --snackbar-scale: 1;
     position: var(--position);
     bottom: calc(var(--height) * -1);
     left: 50%;
@@ -17,10 +17,10 @@
     padding: 0 1em;
     background: #222;
     color: var(--ui-c-light);
-    font-size: calc(var(--scale) * 1em);
-    border-radius: var(--ui-border-radius-sm);
+    font-size: calc(var(--snackbar-scale) * 1em);
+    border-radius: var(--ui-border-radius-small);
     transition: transform 300ms ease-in-out;
-
+    z-index: $z-fixed + 10;
     &__close {
       position: absolute;
       top: 0.5em;
@@ -42,30 +42,32 @@
 </style>
 
 <template>
-  <div :class="['ui-snackbar', computedClass]">
+  <div :class="computedClass" :style="_styleProps">
     <div>
       {{ content }}
     </div>
-    <div class="ui-snackbar__close" @click="hide">
+    <div class="ui-snackbar__close" @click="hideSnackbar">
       <ui-icon size="4" icon="close" />
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
   import { uiIcon } from '../index'
+  import { defineComponent, ref, computed, watch } from 'vue'
+  import styleProps from '../assets/styleProps'
 
-  export default {
+  export default defineComponent({
     name: 'ui-snackbar',
     components: { uiIcon },
     props: {
+      modelValue: {
+        type: Boolean,
+        default: false,
+      },
       content: {
         type: String,
         default: '',
-      },
-      isActive: {
-        type: Boolean,
-        default: false,
       },
       timeout: {
         type: Number,
@@ -75,40 +77,57 @@
         type: Boolean,
         default: false,
       },
-    },
-    data() {
-      return {
-        isRunning: false,
-        currentTimeout: null,
-      }
-    },
-    computed: {
-      computedClass() {
-        return {
-          'ui-snackbar--show': this.isActive,
-        }
+      styleProps: {
+        type: Object,
+        default: () => {
+          return {}
+        },
       },
     },
-    methods: {
-      show(bool) {
+    setup(props, { emit }) {
+      let timeout: number | null
+
+      let isVisible = computed({
+        get: () => props.modelValue,
+        set: value => emit('update:modelValue', value),
+      })
+
+      const hideSnackbar = () => {
+        isVisible.value = false
+        timeout = null
+      }
+
+      const showSnackbar = (bool: boolean) => {
         if (!bool) return
 
-        if (this.currentTimeout) {
-          clearTimeout(this.currentTimeout)
+        if (timeout) {
+          clearTimeout(timeout)
         }
-        if (!this.persistent) {
-          this.currentTimeout = setTimeout(this.hide, this.timeout)
+
+        if (!props.persistent) {
+          timeout = setTimeout(hideSnackbar, props.timeout)
         }
-      },
-      hide() {
-        this.$emit('update:isActive', false)
-        this.currentTimeout = null
-      },
+      }
+
+      watch(
+        () => isVisible.value,
+        (bool: boolean) => {
+          showSnackbar(bool)
+        }
+      )
+      const _styleProps = styleProps(props.styleProps, 'snackbar')
+      const computedClass = computed(() => {
+        return {
+          'ui-snackbar': true,
+          'ui-snackbar--show': isVisible.value,
+        }
+      })
+
+      return {
+        hideSnackbar,
+        computedClass,
+        _styleProps,
+      }
     },
-    watch: {
-      isActive(bool) {
-        this.show(bool)
-      },
-    },
-  }
+  })
 </script>

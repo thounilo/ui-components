@@ -7,7 +7,7 @@
     --input-height: calc(var(--scale) * 1.25em);
     --checkmark-size: calc(var(--input-height) * 0.7);
     --checkmark-start: calc(var(--scale) * 0.2em);
-    --border-radius: var(--ui-border-radius-sm);
+    --border-radius: var(--ui-border-radius-small);
 
     display: inline-flex;
     flex-direction: row-reverse;
@@ -77,10 +77,10 @@
     <label class="ui-toggle__input">
       <input
         class="hide-input"
-        :value="value"
+        :value="isChecked"
         :id="uuid"
         type="checkbox"
-        @input="handleChange($event)"
+        @input="handleChange"
       />
       <span
         :class="[
@@ -92,27 +92,27 @@
   </div>
 </template>
 
-<script>
-  import { minihash } from '../assets/utils'
+<script lang="ts">
+  import { minihash } from '../assets/utils.js'
+  import { defineComponent, computed } from 'vue'
 
-  export default {
-    name: 'ui-toggle',
-    props: { value: Boolean, label: String },
-    data() {
+  export default defineComponent({
+    name: 'uiToggle',
+    props: { modelValue: Boolean, label: String },
+    setup(props, { emit }) {
+      let uuid = computed(() => minihash(8, 'lu'))
+
+      let isChecked = computed({
+        get: () => props.modelValue,
+        set: value => emit('update:modelValue', value),
+      })
+      const handleChange = () => (isChecked.value = !isChecked.value)
+
       return {
-        isChecked: null,
+        uuid,
+        isChecked,
+        handleChange,
       }
     },
-    computed: {
-      uuid() {
-        return minihash(8, 'lu')
-      },
-    },
-    methods: {
-      handleChange({ target }) {
-        this.isChecked = target.checked
-        this.$emit('input', target.checked)
-      },
-    },
-  }
+  })
 </script>
