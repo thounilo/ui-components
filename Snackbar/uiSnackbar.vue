@@ -47,7 +47,7 @@
       {{ content }}
     </div>
     <div class="ui-snackbar__close" @click="hideSnackbar">
-      <ui-icon size="4" icon="close" />
+      <ui-icon :size="4" icon="close" />
     </div>
   </div>
 </template>
@@ -55,7 +55,7 @@
 <script lang="ts">
   import { uiIcon } from '../index'
   import { defineComponent, ref, computed, watch } from 'vue'
-  import styleProps from '../assets/styleProps'
+  import styleProps from '../assets/theme/styleProps'
 
   export default defineComponent({
     name: 'ui-snackbar',
@@ -115,7 +115,7 @@
           showSnackbar(bool)
         }
       )
-      const _styleProps = styleProps(props.styleProps, 'snackbar')
+      const _styleProps = styleProps('snackbar', props.styleProps)
       const computedClass = computed(() => {
         return {
           'ui-snackbar': true,

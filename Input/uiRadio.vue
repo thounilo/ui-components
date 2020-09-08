@@ -2,10 +2,9 @@
   @import '../assets/_variables.scss';
 
   .ui-radio {
-    --scale: 1;
-    --input-size: calc(var(--scale) * 1.25em);
-    --checkmark-size: calc(var(--input-size) * 0.7);
-    --border-radius: var(--ui-border-radius-circle);
+
+    --radio-size: calc(var(--radio-scale, 1) * 1.25em);
+    --radio-checkmark-size: calc(var(--radio-size, 1) * 0.7);
 
     display: inline-flex;
     flex-direction: row-reverse;
@@ -13,20 +12,20 @@
 
     &__label {
       margin-left: 0.5rem;
-      font-size: calc(var(--scale) * 1em);
+      font-size: calc(var(--radio-scale) * 1em);
     }
     &__input {
       position: relative;
-      width: var(--input-size);
-      height: var(--input-size);
-      background: var(--ui-c-light-subtle);
-      border-radius: var(--border-radius);
+      width: var(--radio-size);
+      height: var(--radio-size);
+      background: var(--radio-background);
+      border-radius: var(--radio-border-radius);
       transition: box-shadow 180ms;
       flex: 1 0 auto;
 
       &:hover,
       &:focus-within {
-        box-shadow: $state-active-box-shadow;
+        box-shadow: var(--state-active-shadow);
       }
     }
     &__label,
@@ -35,43 +34,43 @@
     }
 
     &__label:hover ~ &__input {
-      box-shadow: $state-active-box-shadow;
+      box-shadow: var(--state-active-shadow);
     }
 
     &__checkmark {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: var(--checkmark-size);
-      height: var(--checkmark-size);
-      border-radius: var(--border-radius);
+      width: var(--radio-checkmark-size);
+      height: var(--radio-checkmark-size);
+      border-radius: var(--radio-border-radius);
       transform: translate(-50%, -50%) scale(0.5);
       transition: all 180ms ease-in-out;
-    }
-    &--is-checked {
-      background: var(--ui-c-primary);
-      transform: translate(-50%, -50%) scale(1);
+      &._checked {
+        background: var(--ui-c-primary);
+        transform: translate(-50%, -50%) scale(1);
+      }
     }
   }
 </style>
 
 <template>
   <div class="ui-radio">
-    <label class="ui-radio__label" :for="uuid">{{ label }}</label>
+    <label :class="['ui-radio__label', labelClass]" :for="uuid">{{ label }}</label>
     <label class="ui-radio__input" :for="uuid">
       <input
         class="hide-input"
         type="radio"
+        v-bind="$attrs"
         :id="uuid"
         :value="label"
-        :name="name"
-        :checked="isChecked === label"
-        @input="handleChange"
+        :checked="modelValue === label"
+        @input="$emit('update:modelValue', label)"
       />
       <div
         :class="[
           'ui-radio__checkmark',
-          isChecked === label ? 'ui-radio--is-checked' : '',
+          checkmarkClass,
         ]"
       ></div>
     </label>
@@ -79,6 +78,7 @@
 </template>
 
 <script lang="ts">
+
   import { minihash } from '../assets/utils.js'
   import { computed, defineComponent } from 'vue'
 
@@ -90,46 +90,18 @@
         type: String,
         required: true,
       },
-      value: String,
-      name: String,
     },
     setup(props, { emit }) {
-      let uuid = computed(() => minihash(8, 'lu'))
 
-      let isChecked = computed({
-        get: () => props.modelValue,
-        set: value => emit('update:modelValue', value),
-      })
-
-      const handleChange = () => {
-        isChecked.value = props.label
-      }
+      const labelClass = computed(() => props.modelValue === props.label ? 'c-primary' : '')
+      const checkmarkClass = computed(() => props.modelValue === props.label ? '_checked' : '')
 
       return {
-        uuid,
-        isChecked,
-        handleChange,
+        uuid: minihash(8, 'lu'),
+        foo: props.modelValue === props.label ? 'c-primary' : '',
+        labelClass,
+        checkmarkClass,
       }
     },
-    // data() {
-    //   return {
-    //     isChecked: this.value,
-    //   }
-    // },
-    // computed: {
-    //   uuid() {
-    //     return minihash(8, 'lu')
-    //   },
-    // },
-    // methods: {
-    //   handleChange() {
-    //     this.$emit('input', this.label)
-    //   },
-    // },
-    // watch: {
-    //   value(val) {
-    //     this.isChecked = this.value === this.label
-    //   },
-    // },
   })
 </script>

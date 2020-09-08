@@ -36,7 +36,7 @@
 
 <script lang="ts">
   import { defineComponent, computed, onMounted, onBeforeUnmount } from 'vue'
-  import styleProps from '../assets/styleProps'
+  import styleProps from '../assets/theme/styleProps'
 
   export default defineComponent({
     name: 'ui-overlay',
@@ -65,7 +65,7 @@
         get: () => props.modelValue,
         set: value => emit('update:modelValue', value),
       })
-      const _styleProps = styleProps(props.styleProps, 'overlay')
+      const _styleProps = styleProps('overlay', props.styleProps )
       const activateOverlay = () => (isActive.value = true)
       const disableOverlay = () => {
         if (props.delay) {

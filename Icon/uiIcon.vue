@@ -1,12 +1,9 @@
 <style lang="scss">
   .ui-icon {
-    --icon-size: 100%;
-    --icon-color: currentColor;
-
     display: inline-block;
-    width: var(--icon-size);
-    height: var(--icon-size);
-    fill: var(--icon-color);
+    width: var(--icon-size, 100%);
+    height: var(--icon-size, 100%);
+    fill: var(--icon-color, currentColor);
   }
 </style>
 
@@ -17,9 +14,10 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, onMounted, ref } from 'vue'
+  //@ts-ignore
   import iconPath from '../assets/Icons/symbols.svg'
-  import styleProps from '../assets/styleProps'
+  import { computed, defineComponent, onMounted, ref } from 'vue'
+  import {styleProps} from '../assets/theme/styleProps'
 
   export default defineComponent({
     name: 'ui-icon',
@@ -31,23 +29,28 @@
       },
       size: {
         type: Number,
-        default: 5,
+        default: 0,
       },
       styleProps: {
         type: Object,
         default: () => {
-          return {}
+          return {
+          }
         },
       },
     },
     setup(props) {
       const icon = ref()
-
       const computedPath = computed(() => `${iconPath}#${props.icon}`)
-      const _styleProps = styleProps(props.styleProps, 'icon')
-      onMounted(() => {
-        icon.value.style.setProperty('--icon-size', `${props.size * 0.25}em`)
-      })
+      let _prefix = 'icon'
+
+      let _styles = Object.assign(
+        {},
+        {'--size': `${props.size * .25}em`},
+        props.styleProps
+      )
+
+      const _styleProps = styleProps( _prefix, _styles)
 
       return {
         icon,

@@ -32,7 +32,7 @@
 
 <script lang="ts">
   import { onMounted, defineComponent, reactive } from 'vue'
-  import styleProps from '../assets/styleProps'
+  import styleProps from '../assets/theme/styleProps'
   export default defineComponent({
     name: 'uiSticky',
     props: {
@@ -44,9 +44,8 @@
       },
     },
     setup(props) {
-      console.log('props.styleProps', props.styleProps)
       let _styleProps = reactive({})
-      _styleProps = styleProps(props.styleProps, 'sticky')
+      _styleProps = styleProps('sticky',props.styleProps)
       return {
         _styleProps,
       }

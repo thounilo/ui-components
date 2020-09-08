@@ -1,27 +1,26 @@
-const kebabCase = string =>
-  string
-    .replace(/([a-z])([A-Z])/g, '$1-$2')
-    .replace(/\s+/g, '-')
-    .toLowerCase()
+const kebabCase = (s: string) =>
+  s.replace(/([a-z])([A-Z])/g, '$1-$2')
+   .replace(/\s+/g, '-')
+   .toLowerCase()
 
-const cssString = styles =>
+const cssString = (styles: object | string) =>
   typeof styles === 'string'
     ? styles
     : Object.entries(styles)
         .map(s => (s[1] ? `${kebabCase(s[0])}:${s[1]};` : false))
         .filter(Boolean)
-        .reduce((prev, curr) => (prev += curr), '')
+        .reduce((prev: string, curr) => (prev += curr), '')
 
 //? Should include id aswell
-const className = s => (/\./.test(s) ? s : `.${s}`)
+const className = (s: string) => (/\./.test(s) ? s : `.${s}`)
 
-const hasData = v => {
+const hasData = (v: string|object) => {
   if (typeof v === 'string') return v.length
   if (typeof v === 'object') return Object.keys(v).length
   return false
 }
 
-function globalCSS(id) {
+function globalCSS(id: string) {
   const _style = document.createElement('style')
   _style.type = 'text/css'
   _style.id = id || 'style-css'
@@ -31,7 +30,7 @@ function globalCSS(id) {
   document.head.appendChild(_style)
 
   return {
-    insert: (s, css) => {
+    insert: (s: string, css: object) => {
       //TODO Find way to use Element as parameter s
       //* s instanceof Element
 
@@ -53,7 +52,7 @@ function globalCSS(id) {
       )
     },
 
-    delete: s => {
+    delete: (s: string) => {
       if (!s) {
         console.warn('Invalid selector, got: %s', s)
         return
@@ -65,9 +64,22 @@ function globalCSS(id) {
 
       while (c--) {
         let nodes = _style.childNodes
-        if (!!nodes[c] && nodes[c].textContent.includes(_s)) {
-          _style.childNodes[c].parentNode.removeChild(_style.childNodes[c])
+        let node = nodes[c]
+        let styleNode = _style.childNodes[c]
+
+        if(node.textContent === null || !node.textContent.length) {
+          continue
         }
+
+        if(!node.textContent.includes(_s)) {
+          continue
+        }
+        
+        if(!styleNode || styleNode.parentNode === null) {
+          continue 
+        }
+
+        styleNode.parentNode.removeChild(_style.childNodes[c])
       }
     },
 

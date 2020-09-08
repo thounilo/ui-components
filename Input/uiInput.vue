@@ -5,34 +5,27 @@
   $message-font-size: 0.75em;
 
   .ui-input {
-    --height: auto;
-    --width: 20em;
-    --border-radius: var(--ui-border-radius-small);
-    --border: none;
-    --background: var(--ui-c-transparent-light-5);
-    --color: var(--ui-c-light);
-    --padding: 0.5em 0.75em;
-    --scale: 1;
+
 
     width: 100%;
-    max-width: var(--width);
-    color: var(--color);
+    max-width: var(--input-width);
+    color: var(--input-color);
 
     &__element {
       position: relative;
       width: 100%;
-      min-height: var(--height);
-      padding: var(--padding);
+      min-height: var(--input-height);
+      padding: var(--input-padding);
       color: currentColor;
-      background: var(--background);
-      border-radius: var(--border-radius);
+      background: var(--input-background);
+      border-radius: var(--input-border-radius);
       font-family: var(--ui-font);
-      font-size: calc(var(--scale) * 1em);
-      border: var(--border);
+      font-size: calc(var(--input-scale) * 1em);
+      border: var(--input-border);
 
       &::placeholder {
         color: var(--ui-c-transparent-light-60);
-        font-size: calc(var(--scale) * 0.9em);
+        font-size: calc(var(--input-scale) * 0.9em);
       }
     }
 
@@ -50,42 +43,23 @@
     &__label {
       display: block;
       margin-bottom: 0.5em;
-      font-size: calc(var(--scale) * 1em);
+      font-size: calc(var(--input-scale) * 1em);
+      color: var(--ui-c-light)
     }
 
     &__message {
-      font-size: calc(var(--scale) * 0.75em);
+      font-size: calc(var(--input-scale) * 0.75em);
       margin-top: 0.5em;
       font-style: italic;
       display: inline-block;
+      color: var(--ui-c-light-subtle)
     }
   }
 
-  .ui-input {
-    &--outline {
-      --color: var(--ui-c-light);
-      --background: var(--ui-c-transparent-light-5);
-      --border: #{$base-border-width} solid var(--ui-c-primary);
-    }
-
-    &--fill {
-      --background: var(--ui-c-primary);
-      &:focus-within {
-        & input {
-          z-index: 0;
-        }
-      }
-    }
-    &--with-icon {
-      & input {
-        padding-right: 2.25em;
-      }
-    }
-  }
 </style>
 
 <template>
-  <div :class="computedClasses">
+  <div :class="['ui-input', themeClass]">
     <slot name="label">
       <label class="ui-input__label" v-if="label" :for="computedID">{{
         label
@@ -125,9 +99,11 @@
 
 <script lang="ts">
   import { minihash } from '../assets/utils'
-  import { defineComponent, computed, ref } from 'vue'
+  import { defineComponent, computed, ref, inject, onMounted, onUnmounted } from 'vue'
   import { uiIcon } from '../index'
-
+  import CSS from '../assets/theme/css'
+  const css = CSS('inputStyles')
+  
   export default defineComponent({
     name: 'uiInput',
     components: { uiIcon },
@@ -173,15 +149,14 @@
         type: Boolean,
         default: false,
       },
-      fluid: {
-        type: Boolean,
-        default: false,
-      },
       fill: {
         type: Boolean,
         default: false,
       },
-
+      variant: {
+        type: String,
+        default: 'ghost',
+      },
       //* Attrs
       placeholder: {
         type: String,
@@ -211,25 +186,54 @@
         type: String,
         default: '',
       },
-
+      //* new stuff
+      prefix: {
+        type: String,
+        default: 'input'
+      },
+      raised: Boolean,
+      fluid: Boolean,
+      scale: {
+        type: Number,
+        default: 1,
+      },
+      styleProps: {
+        type: Object,
+        default: () => {}
+      },
       //* State
       state: {
         type: Boolean,
         default: null,
       },
     },
-    // TODO styleProps
     setup(props, { emit }) {
-      const computedClasses = computed(() => {
-        return {
-          'ui-input': true,
-          'ui-input__light': !!props.light,
-          'ui-input--with-icon': !!props.icon,
-          'ui-input--outline': !!props.outline,
-          'ui-input--fill': props.fill,
-          'w-full': !!props.fluid,
-        }
-      })
+
+      const Theme:any = inject('theme')
+      const {
+        props: getProps,
+        styles,
+        styleProps,
+        getClasses
+      } = Theme
+
+      const variants = [
+        props.variant,
+        props.raised ? 'raised' : null,
+        props.fluid  ? 'fluid': null,
+      ].filter(Boolean)
+
+
+      const s = styleProps(props.prefix, 
+        getProps(variants),
+        {scale: props.scale},
+        props.styleProps,
+      )
+      const {themeClass, themeSelector} = getClasses()
+
+      onMounted(() => css.insert(themeSelector, s))
+      onUnmounted(() => css.delete(themeSelector))
+
 
       let inputValue = computed({
         get: () => props.modelValue,
@@ -243,20 +247,18 @@
       const uuid = computed(() => (props.id ? props.id : minihash(8, 'lu')))
 
       const hasIcon = ref(!!props.icon)
-      const computedID = computed(() => {
-        return props.for ? props.for : uuid
-      })
+      const computedID = computed(() => props.for ? props.for : uuid.value)
 
       const handleIconClick = (e: MouseEvent) => emit('click:icon', e)
 
       return {
-        computedClasses,
         uuid,
         hasIcon,
         computedID,
         handleIconClick,
         onInput,
         inputValue,
+        themeClass,
       }
     },
   })

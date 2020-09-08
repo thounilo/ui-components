@@ -37,7 +37,7 @@
 
 <script lang="ts">
   import { defineComponent, computed, ref, onMounted, reactive } from 'vue'
-  import { styleProps } from '../assets/styleProps'
+  import { styleProps } from '../assets/theme/styleProps'
 
   export default defineComponent({
     name: 'uiImage',
@@ -67,13 +67,12 @@
 
       const getImageOrientation = () => {
         if (imageRef.naturalWidth > imageRef.naturalWidth) {
-          return 'landscape'
-        } else {
+          return 'landscape'} else {
           return 'portrait'
         }
       }
 
-      const _styleProps = styleProps(props.styleProps, 'image')
+      const _styleProps = styleProps( 'image', props.styleProps)
       onMounted(() => {
         orientation.value = getImageOrientation()
       })
